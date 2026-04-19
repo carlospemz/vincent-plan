@@ -1,0 +1,2950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VINCENT · Plan de 30 días · 19 abr → 19 may</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#1A1208;
+    --ink-soft:#3D2F1F;
+    --ivory:#FBF7EF;
+    --ivory-2:#F5EFE1;
+    --cream:#FFFDF8;
+    --stone:#E8DFC8;
+    --stone-2:#D7CBAE;
+    --muted:#8B7355;
+    --muted-2:#A89477;
+    --copper:#B8862B;
+    --copper-soft:#E8B931;
+    --terracotta:#C1693A;
+    --sage:#7BAA8E;
+    --sage-soft:#B8D4C4;
+    --indigo:#3D4A7A;
+    --indigo-soft:#9FB0D9;
+    --rose:#B85C5C;
+    --line:#E5D9B9;
+    --line-soft:#F0E8D2;
+  }
+  html,body{font-family:'Inter',system-ui,sans-serif;background:var(--ivory);color:var(--ink);font-feature-settings:"ss01","ss02","cv11";-webkit-font-smoothing:antialiased;}
+  .font-display{font-family:'Fraunces',serif;letter-spacing:-0.02em;font-variation-settings:"opsz" 96, "SOFT" 50;}
+  .font-mono{font-family:'JetBrains Mono',monospace;}
+  .font-body{font-family:'Inter',sans-serif;}
+
+  /* Vibes */
+  .vibe-carlos{--vibe-bg:var(--ivory);--vibe-card:var(--cream);--vibe-ink:var(--ink);--vibe-muted:var(--muted);--vibe-line:var(--line);--vibe-accent:var(--indigo);--vibe-accent-soft:#E8ECF5;}
+  .vibe-angel{--vibe-bg:var(--ivory);--vibe-card:var(--cream);--vibe-ink:var(--ink);--vibe-muted:var(--muted);--vibe-line:var(--line);--vibe-accent:var(--copper);--vibe-accent-soft:#F7EAC8;}
+  .vibe-shared{--vibe-bg:var(--ivory);--vibe-card:var(--cream);--vibe-ink:var(--ink);--vibe-muted:var(--muted);--vibe-line:var(--line);--vibe-accent:var(--ink);--vibe-accent-soft:#F0E8D2;}
+
+  /* Header */
+  .hero{background:radial-gradient(ellipse 70% 50% at 20% 0%,rgba(184,134,43,0.10),transparent 60%),radial-gradient(ellipse 60% 50% at 100% 100%,rgba(123,170,142,0.08),transparent 60%),linear-gradient(to bottom,#FDFAF0,#FBF7EF);}
+  .hero-rule{height:1px;background:linear-gradient(to right,transparent,var(--stone-2),transparent);}
+
+  .ring-svg{transform:rotate(-90deg);}
+  .ring-track{stroke:rgba(26,18,8,0.08);}
+  .ring-fill{transition:stroke-dashoffset 700ms cubic-bezier(.4,0,.2,1);}
+
+  .focus-dot{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--vibe-muted);font-weight:500;letter-spacing:0.02em;}
+  .focus-dot::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;}
+  .focus-1::before{background:var(--sage);}
+  .focus-2::before{background:var(--indigo-soft);}
+  .focus-3::before{background:var(--copper);}
+  .focus-4::before{background:var(--rose);}
+
+  .meta{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:500;letter-spacing:0.01em;color:var(--vibe-muted);background:transparent;border:1px solid var(--vibe-line);}
+  .meta-strong{background:var(--vibe-accent-soft);border-color:transparent;color:var(--vibe-accent);font-weight:600;}
+  .meta-gold{background:#F7EAC8;border-color:transparent;color:#8A5F14;font-weight:600;}
+  .meta-red{background:#FCE4DE;border-color:transparent;color:#9A3412;font-weight:600;}
+  .meta-green{background:#E4F0E8;border-color:transparent;color:#3D6E53;font-weight:600;}
+
+  .task-done{opacity:0.50;}
+  .task-done .task-title{text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:var(--vibe-muted);}
+  .task-milestone{border-left:3px solid var(--copper-soft);}
+  .task-blocker{border-left:3px solid var(--rose);}
+  .task-card{transition:background 160ms ease;}
+  .task-card:hover{background:rgba(184,134,43,0.04);}
+
+  /* Expand panel */
+  .expand-panel{overflow:hidden;transition:max-height 320ms cubic-bezier(.4,0,.2,1),opacity 220ms ease,margin 220ms ease;max-height:0;opacity:0;margin-top:0;}
+  .expand-panel.open{max-height:2000px;opacity:1;margin-top:18px;}
+  .disclose-btn{transition:all 180ms ease;}
+  .disclose-btn:hover{color:var(--vibe-accent);}
+  .chevron{transition:transform 240ms ease;}
+  .chevron.open{transform:rotate(90deg);}
+
+  /* Sub-section labels inside expand */
+  .sub-label{font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);font-weight:700;margin-bottom:10px;display:block;}
+  .subtask-item{display:flex;gap:14px;padding:10px 0;border-bottom:1px dashed var(--line-soft);}
+  .subtask-item:last-child{border-bottom:none;}
+  .subtask-num{font-family:'Fraunces',serif;font-size:16px;color:var(--vibe-accent);font-weight:500;line-height:1.4;flex-shrink:0;width:22px;}
+  .subtask-body{font-size:14px;color:var(--ink-soft);line-height:1.55;}
+  .subtask-body b{color:var(--ink);font-weight:600;}
+
+  .kpi-row{display:flex;align-items:baseline;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line-soft);gap:16px;}
+  .kpi-row:last-child{border-bottom:none;}
+  .kpi-row .k-label{font-size:13px;color:var(--ink-soft);flex:1;}
+  .kpi-row .k-target{font-family:'Fraunces',serif;font-size:18px;color:var(--vibe-accent);font-weight:500;letter-spacing:-0.01em;white-space:nowrap;}
+
+  .how-box{background:var(--vibe-accent-soft);padding:16px 18px;border-radius:12px;font-size:14px;color:var(--ink-soft);line-height:1.6;}
+  .how-box b{color:var(--ink);font-weight:600;}
+
+  .pill-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;}
+  @media(max-width:720px){.pill-grid{grid-template-columns:1fr;}}
+
+  /* Gantt */
+  .gantt-grid{background-image:linear-gradient(to right,rgba(184,134,43,0.12) 1px,transparent 1px);background-size:48px 100%;}
+  .gantt-today{background:linear-gradient(to bottom,rgba(193,105,58,0.15),rgba(193,105,58,0.02));border-left:1.5px solid var(--terracotta);}
+  .gantt-bar{transition:all 180ms ease;}
+  .gantt-bar:hover{filter:brightness(0.95);}
+
+  ::-webkit-scrollbar{height:8px;width:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(26,18,8,0.12);border-radius:6px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(26,18,8,0.22);}
+
+  .tab-btn{position:relative;padding:20px 2px;font-size:13px;font-weight:500;letter-spacing:0.04em;color:var(--muted);transition:color 160ms ease;}
+  .tab-btn:hover{color:var(--ink);}
+  .tab-active{color:var(--ink)!important;}
+  .tab-active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--copper);}
+
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{animation:fadeIn 260ms ease both;}
+  @keyframes soft-pulse{0%,100%{opacity:.6}50%{opacity:1}}
+  .soft-pulse{animation:soft-pulse 2.4s ease-in-out infinite;}
+
+  details > summary{list-style:none;cursor:pointer;}
+  details > summary::-webkit-details-marker{display:none;}
+
+  .cbx{appearance:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--stone-2);background:var(--cream);cursor:pointer;position:relative;flex-shrink:0;transition:all 180ms ease;}
+  .cbx:hover{border-color:var(--vibe-accent);}
+  .cbx:checked{background:var(--vibe-accent);border-color:var(--vibe-accent);}
+  .cbx:checked:after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:10px;border:solid var(--cream);border-width:0 2px 2px 0;transform:rotate(45deg);}
+
+  .kpi{padding:18px 20px;}
+  .kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-weight:600;}
+  .kpi-value{font-family:'Fraunces',serif;font-size:34px;line-height:1;font-weight:400;color:var(--ink);margin-top:10px;font-variation-settings:"opsz" 96;}
+  .kpi-delta{font-size:12px;margin-top:6px;color:var(--muted);}
+
+  .pbar{height:4px;background:var(--line-soft);border-radius:999px;overflow:hidden;}
+  .pbar>div{height:100%;background:var(--vibe-accent);transition:width 600ms cubic-bezier(.4,0,.2,1);border-radius:999px;}
+
+  .card{background:var(--cream);border:1px solid var(--line);border-radius:16px;}
+  .card-ghost{background:transparent;border:1px solid var(--line);border-radius:16px;}
+  .card-tinted{background:linear-gradient(to bottom right,#FEFAE8,#FBF5E2);border:1px solid var(--line);border-radius:16px;}
+
+  .today-pill{background:var(--terracotta);color:var(--cream);font-weight:600;font-size:9px;padding:3px 9px;border-radius:999px;letter-spacing:0.12em;text-transform:uppercase;}
+
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;letter-spacing:0.02em;transition:all 160ms ease;}
+  .btn-primary{background:var(--ink);color:var(--cream);}
+  .btn-primary:hover{background:var(--ink-soft);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--stone-2);}
+  .btn-ghost:hover{background:var(--stone);}
+
+  .fchip{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;color:var(--muted);border:1px solid var(--line);cursor:pointer;transition:all 160ms ease;background:transparent;}
+  .fchip:hover{color:var(--ink);background:var(--line-soft);}
+  .fchip-active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+  @media print{.no-print{display:none!important;}}
+  .deco-rule{border:0;height:1px;background:linear-gradient(to right,transparent,var(--stone-2) 20%,var(--stone-2) 80%,transparent);margin:24px 0;}
+  *{scroll-behavior:smooth;}
+  .numeral{font-family:'Fraunces',serif;font-variation-settings:"opsz" 144;letter-spacing:-0.04em;font-weight:400;}
+
+  /* Sync status badge in header */
+  .sync-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.04em;border:1px solid var(--line);background:var(--cream);color:var(--muted);transition:all 160ms ease;cursor:pointer;}
+  .sync-badge:hover{border-color:var(--stone-2);color:var(--ink);}
+  .sync-dot{width:7px;height:7px;border-radius:999px;background:var(--muted-2);}
+  .sync-dot.ok{background:var(--sage);box-shadow:0 0 0 3px rgba(123,170,142,0.18);animation:pulseDot 2.2s ease-in-out infinite;}
+  .sync-dot.pending{background:var(--copper-soft);animation:pulseDot 1.2s ease-in-out infinite;}
+  .sync-dot.err{background:var(--rose);}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:0.55;}}
+
+  /* Auth modal */
+  .auth-overlay{position:fixed;inset:0;background:rgba(26,18,8,0.55);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:24px;}
+  .auth-overlay.show{display:flex;}
+  .auth-card{background:var(--cream);border-radius:20px;border:1px solid var(--stone-2);padding:36px 32px;max-width:440px;width:100%;box-shadow:0 40px 100px -30px rgba(26,18,8,0.35);}
+  .auth-title{font-family:'Fraunces',serif;font-size:28px;font-weight:400;color:var(--ink);letter-spacing:-0.01em;line-height:1.15;}
+  .auth-sub{color:var(--ink-soft);font-size:14px;line-height:1.55;margin-top:10px;}
+  .auth-input{width:100%;padding:13px 16px;border:1px solid var(--stone-2);border-radius:12px;font-size:14px;background:var(--ivory);color:var(--ink);font-family:inherit;transition:all 160ms ease;}
+  .auth-input:focus{outline:none;border-color:var(--copper);background:var(--cream);box-shadow:0 0 0 4px rgba(184,134,43,0.1);}
+  .auth-btn{width:100%;padding:13px 16px;border-radius:12px;font-size:13px;font-weight:600;letter-spacing:0.04em;background:var(--ink);color:var(--cream);transition:all 160ms ease;border:none;cursor:pointer;}
+  .auth-btn:hover{background:var(--ink-soft);}
+  .auth-btn:disabled{opacity:0.5;cursor:wait;}
+  .auth-err{font-size:12px;color:var(--rose);margin-top:10px;line-height:1.4;}
+  .auth-hint{font-size:11px;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+  .auth-row{display:flex;gap:8px;align-items:center;margin-top:12px;}
+  .auth-link{color:var(--copper);font-weight:600;text-decoration:underline;font-size:12px;cursor:pointer;background:none;border:none;padding:0;}
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- HERO -->
+<header class="hero relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 pt-14 pb-10">
+    <div class="flex items-center justify-between gap-6">
+      <div class="flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-[var(--muted)] font-semibold">
+        <div class="w-7 h-7 rounded-full bg-[var(--ink)] text-[var(--copper-soft)] flex items-center justify-center font-display font-medium" style="font-size:14px;">V</div>
+        <span>Vincent · Plan de 30 días</span>
+      </div>
+      <div class="flex items-center gap-2 no-print flex-wrap justify-end">
+        <button id="syncBadge" onclick="openAuthModal()" class="sync-badge" title="Estado de sincronización">
+          <span id="syncDot" class="sync-dot"></span>
+          <span id="syncText">Sync local</span>
+        </button>
+        <button onclick="jumpToToday()" class="btn btn-ghost">Ir a hoy</button>
+        <button onclick="exportState()" class="btn btn-ghost">Exportar</button>
+        <button onclick="importState()" class="btn btn-ghost">Importar</button>
+      </div>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-3 gap-8 items-end">
+      <div class="md:col-span-2">
+        <div class="text-[11px] uppercase tracking-[0.25em] text-[var(--copper)] font-semibold mb-3">19 abril → 19 mayo · 2026</div>
+        <h1 class="font-display text-5xl md:text-6xl leading-[1.02] text-[var(--ink)] mb-5" style="font-weight:400;">
+          Dos productos, dos frentes, un mes para <span style="font-style:italic;color:var(--copper);">facturar</span> y firmar el primer <span style="font-style:italic;color:var(--copper);">Care</span>.
+        </h1>
+        <p class="text-[var(--ink-soft)] text-base md:text-lg max-w-2xl leading-relaxed">
+          Carlos se clava en <b>Vincent Care</b>: dejar el producto estable y firmar la primera clínica que paga. Angel empuja <b>Vincent Growth</b>: cuidar los clientes actuales, cerrar contenido nuevo, grabar, contactar doctores y vestir la marca. Cada quien a lo suyo. La meta combinada es clara: más lana ahora, sin romper lo que ya está vivo.
+        </p>
+      </div>
+      <div class="flex items-center justify-end gap-5">
+        <div class="relative">
+          <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="ring-track" cx="60" cy="60" r="52" stroke-width="6" fill="none"></circle>
+            <circle id="globalRing" cx="60" cy="60" r="52" stroke="#B8862B" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" class="ring-fill"></circle>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <div id="globalPct" class="numeral text-[var(--ink)]" style="font-size:34px;">0%</div>
+            <div class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)] mt-1">Avance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-rule mt-10"></div>
+
+    <div id="phaseStrip" class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="sticky top-0 z-30 bg-[var(--ivory)]/92 backdrop-blur border-b border-[var(--line)] no-print">
+  <div class="max-w-6xl mx-auto px-6 flex items-center gap-8 overflow-x-auto">
+    <button data-tab="overview" class="tab-btn whitespace-nowrap">Panorama</button>
+    <button data-tab="carlos" class="tab-btn whitespace-nowrap">Carlos · Care</button>
+    <button data-tab="angel" class="tab-btn whitespace-nowrap">Angel · Growth</button>
+    <button data-tab="timeline" class="tab-btn whitespace-nowrap">Línea de tiempo</button>
+    <button data-tab="playbook" class="tab-btn whitespace-nowrap">Cómo operar</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="max-w-6xl mx-auto px-6 py-12">
+
+  <!-- ========================== OVERVIEW TAB ========================== -->
+  <section data-panel="overview" class="vibe-shared space-y-10">
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-0 card divide-x divide-y md:divide-y-0 divide-[var(--line)]">
+      <div class="kpi">
+        <div class="kpi-label">Día del plan</div>
+        <div id="daysElapsed" class="kpi-value">—</div>
+        <div class="kpi-delta">de 31 totales</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Tareas hechas</div>
+        <div id="kpiDone" class="kpi-value">0</div>
+        <div id="kpiTotal" class="kpi-delta">de 0</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Momentos clave</div>
+        <div id="kpiMilestones" class="kpi-value">0</div>
+        <div class="kpi-delta">decisiones que mueven el mes</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Hoy</div>
+        <div id="kpiToday" class="kpi-value">0</div>
+        <div class="kpi-delta">cosas para este día</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Ingresos meta del mes</div>
+        <div class="kpi-value">~$11k</div>
+        <div class="kpi-delta">Care $3k MRR + Growth Vincent $7.9k</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Primer Care paying</div>
+        <div class="kpi-value">8 may</div>
+        <div class="kpi-delta">Damiana firma + primer cobro</div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 card p-8">
+        <div class="flex items-end justify-between mb-6 gap-4 flex-wrap">
+          <div>
+            <div class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)] font-semibold">Hoy</div>
+            <h3 class="font-display text-3xl text-[var(--ink)] mt-1" style="font-weight:400;"><span id="todayLabel"></span></h3>
+          </div>
+          <div class="flex items-center gap-4 text-xs text-[var(--muted)]">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full" style="background:var(--indigo);"></span> Carlos · Care</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full" style="background:var(--copper);"></span> Angel · Growth</span>
+          </div>
+        </div>
+        <div id="todayTasks" class="space-y-2"></div>
+      </div>
+      <div class="card-tinted p-8">
+        <div class="text-[10px] uppercase tracking-[0.2em] text-[var(--copper)] font-semibold mb-5">Próximos momentos clave</div>
+        <div id="upcomingMilestones" class="space-y-5"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex items-baseline justify-between mb-5">
+        <h3 class="font-display text-3xl text-[var(--ink)]" style="font-weight:400;">Las cuatro semanas</h3>
+        <p class="text-sm text-[var(--muted)] italic">una fase, un objetivo claro</p>
+      </div>
+      <div id="weeklyBreakdown" class="grid md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-6">
+      <div class="card p-8 lg:col-span-2">
+        <h3 class="font-display text-2xl text-[var(--ink)] mb-2" style="font-weight:400;">Cómo se reparte el esfuerzo</h3>
+        <p class="text-sm text-[var(--muted)] mb-6">Horas del mes por tipo de atención requerida.</p>
+        <div id="focusDist" class="space-y-4"></div>
+      </div>
+      <div class="card p-8 lg:col-span-3">
+        <h3 class="font-display text-2xl text-[var(--ink)] mb-2" style="font-weight:400;">Reglas del mes</h3>
+        <p class="text-sm text-[var(--muted)] mb-6">Ocho principios para que el plan aguante 30 días.</p>
+        <div class="grid gap-4">
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">01</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Carlos no hace ventas, Angel no toca código.</b> Cada quien su frente. Si alguien quiere cruzar, se avisa y se decide juntos.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">02</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Nada nuevo hasta el 4 de mayo.</b> Cualquier idea, feature o cliente fuera del plan se va al parking.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">03</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">100% foco en Vincent.</b> Angel no trabaja en clientes externos durante el mes. Toda la producción, pitch y outreach es Vincent Care y Vincent Growth. Lo que no suma, se posterga.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">04</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Cliente pagando en la mesa gana sobre todo lo demás.</b> Si Angel cierra, Carlos suelta lo que tenga y arranca la instalación.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">05</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Check-in a las 9 am.</b> Cinco minutos por WhatsApp. Qué sale hoy, qué puede trabarse, qué necesita el otro.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">06</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Sábado 10 am, revisión juntos.</b> Zoom, 30 min. Métricas de la semana, qué se cerró, qué se patea, qué se ajusta.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">07</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Carlos deja algo vivo cada día.</b> Si un día cierra sin deploy, al siguiente es prioridad uno antes que cualquier otra cosa.</div></div>
+          <div class="flex gap-5"><span class="numeral text-[var(--copper)] opacity-60 flex-shrink-0" style="font-size:20px;">08</span><div class="text-sm text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Angel graba o contacta todos los días.</b> Producción visible + conversaciones reales. Sin excepciones en días laborales.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== CARLOS TAB ========================== -->
+  <section data-panel="carlos" class="vibe-carlos hidden space-y-10">
+
+    <div class="flex items-start justify-between flex-wrap gap-6 pb-8 border-b border-[var(--line)]">
+      <div class="flex items-start gap-5">
+        <div class="w-14 h-14 rounded-full bg-[var(--indigo)] text-[var(--cream)] flex items-center justify-center font-display text-xl" style="font-weight:500;">C</div>
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--indigo)] font-semibold">Vincent Care · Producto</div>
+          <h2 class="font-display text-4xl md:text-5xl text-[var(--ink)] mt-1" style="font-weight:400;">Carlos</h2>
+          <p class="text-[var(--ink-soft)] text-base mt-3 max-w-xl leading-relaxed italic">
+            Dejar Care en producción, estable, con la primera clínica pagando y el proceso de instalación tan limpio que Angel pueda correrlo solo.
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div>
+          <div class="kpi-label">Avance Carlos</div>
+          <div class="flex items-baseline gap-2 mt-2"><div id="carlosPct" class="numeral text-[var(--ink)]" style="font-size:44px;">0%</div></div>
+          <div id="carlosCount" class="text-xs text-[var(--muted)] mt-1">0 de 0 tareas</div>
+        </div>
+        <div class="w-px bg-[var(--line)]"></div>
+        <div>
+          <div class="kpi-label">Días sin caídas</div>
+          <div class="flex items-baseline gap-2 mt-2"><div class="numeral text-[var(--ink)]" style="font-size:44px;">—</div></div>
+          <div class="text-xs text-[var(--muted)] mt-1">meta: 7 seguidos al 7 de mayo</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-4">Métricas del mes</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-0 card divide-x divide-[var(--line)]">
+        <div class="kpi"><div class="kpi-label">Deploys por semana</div><div class="kpi-value">≥5</div><div class="kpi-delta">lunes a viernes, cosas visibles</div></div>
+        <div class="kpi"><div class="kpi-label">Clínicas Care en vivo</div><div class="kpi-value">0 → 2</div><div class="kpi-delta">Damiana + segunda al 19 may</div></div>
+        <div class="kpi"><div class="kpi-label">Flujos Care funcionando</div><div class="kpi-value">100%</div><div class="kpi-delta">agendar · recordar · escalar · reporte</div></div>
+        <div class="kpi"><div class="kpi-label">Uptime de crons</div><div class="kpi-value">99.5%</div><div class="kpi-delta">alerta automática si falla</div></div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap no-print">
+      <span class="text-xs uppercase tracking-[0.18em] text-[var(--muted)] font-semibold mr-2">Mostrar</span>
+      <button data-filter-carlos="all" class="fchip fc-btn fchip-active">Todas</button>
+      <button data-filter-carlos="pending" class="fchip fc-btn">Pendientes</button>
+      <button data-filter-carlos="done" class="fchip fc-btn">Hechas</button>
+      <button data-filter-carlos="f3-4" class="fchip fc-btn">Solo alta concentración</button>
+      <button data-filter-carlos="blocker" class="fchip fc-btn">Críticas</button>
+    </div>
+
+    <div id="carlosTasksContainer" class="space-y-5"></div>
+  </section>
+
+  <!-- ========================== ANGEL TAB ========================== -->
+  <section data-panel="angel" class="vibe-angel hidden space-y-10">
+
+    <div class="flex items-start justify-between flex-wrap gap-6 pb-8 border-b border-[var(--line)]">
+      <div class="flex items-start gap-5">
+        <div class="w-14 h-14 rounded-full bg-[var(--copper)] text-[var(--cream)] flex items-center justify-center font-display text-xl" style="font-weight:500;">A</div>
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--copper)] font-semibold">Vincent Growth · Marca · Ventas</div>
+          <h2 class="font-display text-4xl md:text-5xl text-[var(--ink)] mt-1" style="font-weight:400;">Angel</h2>
+          <p class="text-[var(--ink-soft)] text-base mt-3 max-w-xl leading-relaxed italic">
+            Construir marca Vincent desde cero. Cerrar primer cliente Growth Vincent. Firmar Damiana y segundo Care. Pipeline lleno para junio.
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div>
+          <div class="kpi-label">Avance Angel</div>
+          <div class="flex items-baseline gap-2 mt-2"><div id="angelPct" class="numeral text-[var(--ink)]" style="font-size:44px;">0%</div></div>
+          <div id="angelCount" class="text-xs text-[var(--muted)] mt-1">0 de 0 tareas</div>
+        </div>
+        <div class="w-px bg-[var(--line)]"></div>
+        <div>
+          <div class="kpi-label">Cierres del mes</div>
+          <div class="flex items-baseline gap-2 mt-2"><div class="numeral text-[var(--ink)]" style="font-size:44px;">0 / 3</div></div>
+          <div class="text-xs text-[var(--muted)] mt-1">2 Care + 1 Growth Vincent al 19 may</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-4">Métricas del mes</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-0 card divide-x divide-[var(--line)]">
+        <div class="kpi"><div class="kpi-label">Ingresos Vincent al 19 may</div><div class="kpi-value">$0 → ~$11k</div><div class="kpi-delta">Care MRR + primer Growth Vincent</div></div>
+        <div class="kpi"><div class="kpi-label">Piezas marca Vincent</div><div class="kpi-value">≥45</div><div class="kpi-delta">reels + carruseles + posts</div></div>
+        <div class="kpi"><div class="kpi-label">Conversaciones Care</div><div class="kpi-value">0 → 20</div><div class="kpi-delta">doctores con deck + demo</div></div>
+        <div class="kpi"><div class="kpi-label">Días de grabación</div><div class="kpi-value">≥4</div><div class="kpi-delta">marca Vincent + testimoniales</div></div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap no-print">
+      <span class="text-xs uppercase tracking-[0.18em] text-[var(--muted)] font-semibold mr-2">Mostrar</span>
+      <button data-filter-angel="all" class="fchip fa-btn fchip-active">Todas</button>
+      <button data-filter-angel="pending" class="fchip fa-btn">Pendientes</button>
+      <button data-filter-angel="done" class="fchip fa-btn">Hechas</button>
+      <button data-filter-angel="f3-4" class="fchip fa-btn">Solo alta concentración</button>
+      <button data-filter-angel="blocker" class="fchip fa-btn">Críticas</button>
+    </div>
+
+    <div id="angelTasksContainer" class="space-y-5"></div>
+  </section>
+
+  <!-- ========================== TIMELINE TAB ========================== -->
+  <section data-panel="timeline" class="vibe-shared hidden space-y-8">
+    <div class="card p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-4">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold">Vista completa</div>
+          <h3 class="font-display text-3xl text-[var(--ink)] mt-1" style="font-weight:400;">Línea de tiempo</h3>
+          <p class="text-sm text-[var(--muted)] mt-2">31 días. Pasa el cursor para ver detalle · click para marcar hecho · la línea ámbar es hoy.</p>
+        </div>
+        <div class="flex gap-3 text-xs items-center flex-wrap">
+          <span class="focus-dot focus-1">Ligero</span>
+          <span class="focus-dot focus-2">Enfoque</span>
+          <span class="focus-dot focus-3">Profundo</span>
+          <span class="focus-dot focus-4">Intocable</span>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <div id="ganttChart" class="min-w-[1600px]"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex items-baseline justify-between mb-5">
+        <h3 class="font-display text-3xl text-[var(--ink)]" style="font-weight:400;">Momentos clave del mes</h3>
+        <p class="text-sm text-[var(--muted)] italic">los que no pueden fallar</p>
+      </div>
+      <div id="milestonesBoard" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- ========================== PLAYBOOK TAB ========================== -->
+  <section data-panel="playbook" class="vibe-shared hidden space-y-10">
+
+    <div class="card p-10">
+      <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--copper)] font-semibold">Marco operativo</div>
+      <h3 class="font-display text-4xl text-[var(--ink)] mt-2 mb-4" style="font-weight:400;">Cómo trabajar este plan</h3>
+      <p class="text-[var(--ink-soft)] text-lg max-w-2xl leading-relaxed mb-10 italic">
+        No es ley. Es estructura para que el día no dependa de la motivación. Si falla la fuerza de voluntad, la estructura entrega el resultado.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-10">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-4">Niveles de concentración</div>
+          <div class="space-y-5">
+            <div><div class="flex items-center gap-2 mb-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--sage);"></span><span class="font-display text-lg" style="font-weight:500;">Ligero</span></div><p class="text-sm text-[var(--ink-soft)] leading-relaxed pl-5">Con música, entre mensajes. Envíos, follow-ups simples, actualizar estados, postear. 15-30 min.</p></div>
+            <div><div class="flex items-center gap-2 mb-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--indigo-soft);"></span><span class="font-display text-lg" style="font-weight:500;">Enfoque</span></div><p class="text-sm text-[var(--ink-soft)] leading-relaxed pl-5">Atención pero no aislamiento. Escribir propuestas, configurar, llamadas no críticas, edición de video. 1-2 bloques de 25 min.</p></div>
+            <div><div class="flex items-center gap-2 mb-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--copper);"></span><span class="font-display text-lg" style="font-weight:500;">Profundo</span></div><p class="text-sm text-[var(--ink-soft)] leading-relaxed pl-5">Notificaciones off, una pestaña, cabeza adentro. Código complejo, pitch ensayado, estrategia real. 2-4 bloques con pausa de 5 min.</p></div>
+            <div><div class="flex items-center gap-2 mb-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--rose);"></span><span class="font-display text-lg" style="font-weight:500;">Intocable</span></div><p class="text-sm text-[var(--ink-soft)] leading-relaxed pl-5">Modo avión. Demo en vivo, visita a cliente, cierre de negociación, deploy bajo presión. Una sola cosa por bloque.</p></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-4">Estructura del día</div>
+          <div class="space-y-3 text-sm">
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">07:00</span><span class="text-[var(--ink-soft)] leading-relaxed">Levantarse, caminar o gym, desayuno. Cero pantalla de trabajo.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">09:00</span><span class="text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Check-in por WhatsApp</b> entre los dos. Cinco minutos. Qué sale hoy, qué puede trabarse.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">09:15</span><span class="text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Bloque profundo.</b> Lo más importante del día. 2-3 bloques de 25 min con pausa.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">12:00</span><span class="text-[var(--ink-soft)] leading-relaxed">Comer y desconectar de verdad. Sin pantalla de trabajo.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">13:30</span><span class="text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Segundo bloque.</b> Siguiente prioridad. Avance, pruebas, iteración, llamadas de ventas.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">16:00</span><span class="text-[var(--ink-soft)] leading-relaxed">Pausa activa. Caminar, agua, lejos del celular del trabajo.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">16:20</span><span class="text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Cierre del día.</b> Follow-ups, verificar, publicar, actualizar estados.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">18:00</span><span class="text-[var(--ink-soft)] leading-relaxed"><b class="text-[var(--ink)]">Marcar tareas hechas</b> aquí en el doc. Una línea de qué queda mañana.</span></div>
+            <div class="flex gap-4"><span class="font-mono text-xs text-[var(--copper)] mt-0.5 w-20 flex-shrink-0">18:00+</span><span class="text-[var(--ink-soft)] leading-relaxed">Vida personal. Nada de Vincent salvo crisis real de cliente que paga.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="deco-rule" />
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-3">Cuando te atores</div>
+          <ul class="text-sm text-[var(--ink-soft)] space-y-3 leading-relaxed">
+            <li>· 20 min atorado. Cambia de tarea y vuelves después. No quemes dos horas.</li>
+            <li>· 2 días sin avanzar algo. Llamada de 15 min entre ustedes. ¿Traba técnica o decisión?</li>
+            <li>· Sin claridad de qué hacer. Mira "hoy" y haz la primera.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-3">Contra el desborde</div>
+          <ul class="text-sm text-[var(--ink-soft)] space-y-3 leading-relaxed">
+            <li>· Idea nueva de feature. Al parking, no al sprint.</li>
+            <li>· Cliente pide algo custom. Respuesta default: "v1.1, hoy vamos con piloto estándar".</li>
+            <li>· Bug que te encuentras sin buscar. Si no es crítico, al backlog.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] font-semibold mb-3">Señales de pausa</div>
+          <ul class="text-sm text-[var(--ink-soft)] space-y-3 leading-relaxed">
+            <li>· Menos de 6 horas de sueño dos noches seguidas.</li>
+            <li>· Empezar el día sin saber qué toca (para eso está este doc).</li>
+            <li>· 3 días sin deploy visible (Carlos) o sin conversación comercial (Angel).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-10">
+      <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--copper)] font-semibold">Realidad</div>
+      <h3 class="font-display text-3xl text-[var(--ink)] mt-2 mb-6" style="font-weight:400;">Lo que puede salir mal, y cómo lo resolvemos</h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(193,105,58,0.04);border-left:3px solid var(--terracotta);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--terracotta);">Alto</div><div class="font-display text-lg mt-2" style="font-weight:500;">Sender de Twilio sigue offline al 27 de abril</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Esto bloquea el go-live de Damiana.<br/><b class="text-[var(--ink)]">Plan B:</b> Carlos abre ticket de soporte con Twilio el 22 abril si sigue sin moverse. Simultáneamente evalúa 360dialog como fallback (código ya está abstracto detrás del factory).</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(193,105,58,0.04);border-left:3px solid var(--terracotta);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--terracotta);">Alto</div><div class="font-display text-lg mt-2" style="font-weight:500;">Damiana no firma o se tarda más de 2 semanas</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Pipeline se queda sin primer cliente Care.<br/><b class="text-[var(--ink)]">Plan B:</b> Angel identifica 10 dentistas más entre Monclova/MTY al 25 abril. El primer cierre no depende de una persona.</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(184,134,43,0.04);border-left:3px solid var(--copper);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--copper);">Medio</div><div class="font-display text-lg mt-2" style="font-weight:500;">HOK, MC o BA churnean por descuido</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">$16.5k MRR está vivo por ellos.<br/><b class="text-[var(--ink)]">Plan B:</b> contacto semanal obligatorio, contenido del mes adelantado antes del 2 mayo. Angel bloquea viernes o sábado para producción industrial.</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(184,134,43,0.04);border-left:3px solid var(--copper);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--copper);">Medio</div><div class="font-display text-lg mt-2" style="font-weight:500;">Carlos revienta en las primeras dos semanas</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Semanas de harden + onboarding son pesadas.<br/><b class="text-[var(--ink)]">Plan B:</b> domingos sin pantalla, sábados tarde libres si salió la semana, bajar intensidad después del gate del 7 mayo.</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(184,134,43,0.04);border-left:3px solid var(--copper);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--copper);">Medio</div><div class="font-display text-lg mt-2" style="font-weight:500;">Angel no alcanza contenido de Growth + outreach Care</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Dos frentes simultáneos saturan.<br/><b class="text-[var(--ink)]">Plan B:</b> priorizar clientes pagando. Si outreach Care cae, lo recupera post 4 mayo cuando Carlos libere para ayudar con materiales.</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(123,170,142,0.05);border-left:3px solid var(--sage);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:#3D6E53;">Bajo</div><div class="font-display text-lg mt-2" style="font-weight:500;">Cuando Damiana pague, la empresa no está constituida</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Cobro temporal a cuenta personal.<br/><b class="text-[var(--ink)]">Plan B:</b> iniciar trámites de RFC/banca esta semana. Meta empresa constituida al 31 mayo.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="max-w-6xl mx-auto px-6 py-12 text-center">
+  <div class="hero-rule mb-6"></div>
+  <p class="text-xs text-[var(--muted)] italic">Vincent · Plan de 30 días · Se guarda localmente en tu navegador. Para sincronizar, exporta e importa el archivo.</p>
+</footer>
+
+<!-- ============================== DATA + LOGIC ============================== -->
+<script>
+const PHASES = [
+  { id:"harden",  name:"Dejar Care sólido",       short:"Fase 1", start:"2026-04-19", end:"2026-04-26", color:"#3D4A7A", desc:"Carlos desbloquea Twilio y prepara el producto para onboarding. Angel cuida lo que factura y llena el tubo de prospectos Care." },
+  { id:"tenant",  name:"Primer cliente en vivo",  short:"Fase 2", start:"2026-04-27", end:"2026-05-03", color:"#7BAA8E", desc:"Damiana instalada, recibiendo mensajes reales, con monitoreo vivo. Angel cierra reuniones presenciales de Care y produce contenido adelantado para Growth." },
+  { id:"cierre",  name:"Cierre + punto de control", short:"Fase 3", start:"2026-05-04", end:"2026-05-10", color:"#B8862B", desc:"Gate de 7 días sin P0. Damiana pagando. Materiales de venta listos con case study real. Angel cierra segundo Growth y upsells." },
+  { id:"scale",   name:"Escalar y segundo Care",  short:"Fase 4", start:"2026-05-11", end:"2026-05-19", color:"#C1693A", desc:"Onboarding autoservicio. Segundo cliente Care. Tubo de junio preparado. Revisión de mes y plan del siguiente ciclo." }
+];
+
+const T = (id, owner, date, title, opts={}) => ({
+  id, owner, date, title,
+  why: opts.why || "",
+  how: opts.how || "",
+  subtasks: opts.subtasks || [],
+  kpis: opts.kpis || [],
+  durationMin: opts.durationMin || 60,
+  focus: opts.focus || 2,
+  slot: opts.slot || "flexible",
+  pomodoros: opts.pomodoros || Math.max(1, Math.round((opts.durationMin||60)/25)),
+  phase: opts.phase || phaseForDate(date),
+  milestone: !!opts.milestone,
+  blocker: !!opts.blocker
+});
+
+function phaseForDate(d){for(const p of PHASES){if(d>=p.start && d<=p.end) return p.id;}return null;}
+
+const TASKS = [
+
+  /* ================================ CARLOS — CARE ================================ */
+
+  // Dom 19 abr
+  T("c-0419-1","carlos","2026-04-19","Auditoría del estado real de Care",{
+    why:"Antes de planear hay que saber qué está vivo y qué no. Voy a mapear el estado del código, infra y bloqueos para no arrancar con supuestos.",
+    how:"Leo el doc 13-recent-progress y el 14-business-state. Abro el dashboard de Vercel, Twilio Console y Supabase. Anoto en una nota qué está verde, qué está rojo y qué está en limbo.",
+    subtasks:[
+      "Abrir Twilio Console y confirmar estado real del sender +5218135825035",
+      "Verificar en Vercel que el último deploy a producción esté verde",
+      "Entrar a Supabase y revisar que no haya migrations pendientes de aplicar",
+      "Leer los últimos 3 días de logs de /api/webhook/twilio-whatsapp si hay tráfico",
+      "Escribir nota con 3 cosas: qué bloquea, qué funciona, qué falta"
+    ],
+    kpis:[
+      {label:"Nota de auditoría escrita",target:"1 archivo en repo"},
+      {label:"Bloqueos identificados",target:"Lista priorizada"}
+    ],
+    durationMin:90,focus:2,slot:"afternoon"
+  }),
+  T("c-0419-2","carlos","2026-04-19","Setup de la semana en Linear / Notion",{
+    why:"La semana arranca el lunes. Hoy organizo para que lunes no se pierda en planeación.",
+    how:"Abrir mi tool de tasks, meter las tareas de lunes a viernes con su duración y prioridad. Cerrar tabs innecesarios. Dejar preparado el ambiente local.",
+    subtasks:[
+      "Meter las tareas Carlos de la semana en Linear con fecha",
+      "Dejar VS Code abierto con el repo luno-platform en branch main",
+      "Revisar que .env.local tenga todas las llaves actualizadas",
+      "Poner alarma a las 8:30 para check-in 9am con Angel"
+    ],
+    kpis:[{label:"Semana pre-cargada",target:"Listo antes de dormir"}],
+    durationMin:30,focus:1,slot:"evening"
+  }),
+
+  // Lun 20 abr
+  T("c-0420-1","carlos","2026-04-20","Desbloquear el sender de Twilio",{
+    why:"Sin el número en vivo no hay Care. Este bloqueo externo es el cuello de botella del mes. Si hoy sigue rojo, abro ticket.",
+    how:"Entrar a Twilio Console. Si el sender sigue 'Connecting phone number to Twilio, Inc', abrir ticket de soporte Twilio con toda la info (WABA ID, Meta Business Manager ID, historial). Escalar con urgencia P1.",
+    subtasks:[
+      "Entrar a Twilio Console → WhatsApp Senders",
+      "Capturar screenshot del estado actual del sender",
+      "Si sigue offline más de 48h, abrir ticket Twilio con prioridad alta",
+      "Verificar en Meta Business Manager que la WABA 160847698687562611 esté en orden",
+      "Mensaje a Angel con estado actual y ETA estimado"
+    ],
+    kpis:[
+      {label:"Sender status confirmado",target:"Online | Pending | Blocked"},
+      {label:"Ticket abierto si aplica",target:"Número de ticket guardado"}
+    ],
+    durationMin:60,focus:3,slot:"morning",blocker:true
+  }),
+  T("c-0420-2","carlos","2026-04-20","Fix de la sección 'Tu competencia' en brief público",{
+    why:"Ha crasheado múltiples veces por hydration mismatch. Último estado es revert + defensive String() coercion. Hay que limpiarlo para no depender de esa fragilidad.",
+    how:"Reproducir el crash localmente con data real. Identificar dónde el objeto llega con forma inesperada. Aplicar validación con zod o type guards antes de render. Tests de integración con 3 shapes distintos.",
+    subtasks:[
+      "Reproducir el hydration mismatch con brand_voice como object vs string",
+      "Refactorizar competencia section con type guards antes de render",
+      "Agregar test con 3 shapes de input (object válido, string legacy, null)",
+      "Deploy a preview y verificar que no hay warnings en console",
+      "Merge a main con tests verdes"
+    ],
+    kpis:[
+      {label:"Tests pasando",target:"3/3"},
+      {label:"Console warnings",target:"0 en hydration"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+  T("c-0420-3","carlos","2026-04-20","Check-in de cierre con Angel",{
+    why:"Disciplina diaria de visibilidad. Sin esto, se pierde coordinación.",
+    how:"WhatsApp a Angel: qué cerré hoy, qué bloquea, qué necesito de él mañana.",
+    subtasks:["Mensaje de 4 líneas a Angel antes de las 7pm"],
+    kpis:[{label:"Check-in enviado",target:"Antes 19:00"}],
+    durationMin:10,focus:1,slot:"evening"
+  }),
+
+  // Mar 21 abr
+  T("c-0421-1","carlos","2026-04-21","Configurar env vars de producción en Vercel",{
+    why:"Cuando el sender vaya online, tiene que estar todo listo para no perder tiempo configurando al momento del go-live.",
+    how:"Entrar a Vercel → Project Settings → Environment Variables. Agregar todas las de Twilio en Production. Verificar trim de newlines (bug conocido de vercel env).",
+    subtasks:[
+      "TWILIO_ACCOUNT_SID con valor de Twilio Console",
+      "TWILIO_AUTH_TOKEN con valor de Twilio Console",
+      "TWILIO_WHATSAPP_FROM=+5218135825035",
+      "TWILIO_WHATSAPP_TENANT_SLUG=clinica-damiana (nuevo slug)",
+      "TWILIO_WHATSAPP_WEBHOOK_URL=https://luno-platform-tau.vercel.app/api/webhook/twilio-whatsapp",
+      "Verificar que no haya trailing newlines con curl al endpoint health",
+      "Redeploy para aplicar variables"
+    ],
+    kpis:[
+      {label:"Variables en Production",target:"5 de 5"},
+      {label:"Trim verificado",target:"Sin newlines"}
+    ],
+    durationMin:60,focus:2,slot:"morning"
+  }),
+  T("c-0421-2","carlos","2026-04-21","Revisar y reforzar el webhook handler de Twilio",{
+    why:"El webhook es el punto de entrada del sistema. Si falla ahí, todo se cae silencioso. Hardening antes de tráfico real.",
+    how:"Leer src/app/api/webhook/twilio-whatsapp/route.ts. Verificar HMAC signature, rate limiting, tenant resolution, error handling. Agregar logs estructurados en los puntos críticos.",
+    subtasks:[
+      "Verificar que HMAC reconstruye URL correctamente desde request headers",
+      "Confirmar rate limiting funciona (test con 100 req en 10s)",
+      "Validar que tenant resolution por slug devuelve null limpio si no existe",
+      "Agregar console.log estructurado en cada error path",
+      "Deploy a preview y probar con Twilio signature validator tool"
+    ],
+    kpis:[
+      {label:"Test manual con validator Twilio",target:"Pasa"},
+      {label:"Rate limit test",target:"Bloquea en 101"}
+    ],
+    durationMin:120,focus:3,slot:"morning"
+  }),
+  T("c-0421-3","carlos","2026-04-21","Escribir tests de integración del revenue loop",{
+    why:"El pipeline de 12 steps no tiene coverage crítico. Un cambio puede romper silencioso. Tests ahora protegen el onboarding real.",
+    how:"Vitest con Supabase local. Test fixture: tenant + patient + mensaje. Ejecutar el loop completo con mock adapter. Verificar que cada step produce el side effect esperado.",
+    subtasks:[
+      "Setup fixture de tenant clínica dental con 3 servicios",
+      "Test: mensaje simple 'quiero cita' → booking draft creado",
+      "Test: mensaje ambiguo → escalation_queue con reason correcto",
+      "Test: confirmation loop → reminder_jobs scheduled para 24h y 2h",
+      "Run los 4 tests con coverage report"
+    ],
+    kpis:[
+      {label:"Tests nuevos",target:"4 pasando"},
+      {label:"Coverage revenue loop",target:">70%"}
+    ],
+    durationMin:150,focus:3,slot:"afternoon"
+  }),
+
+  // Mie 22 abr
+  T("c-0422-1","carlos","2026-04-22","Construir script de onboarding de tenant",{
+    why:"Crear una clínica hoy requiere 15 inserts manuales. Con un script, Angel o yo lo hacemos en 90 minutos. Preparar esto antes de Damiana es crítico.",
+    how:"Script Node en scripts/onboard-tenant.ts. Recibe un JSON con tenant config (horarios, servicios, FAQs, owner). Ejecuta inserts idempotentes en Supabase. Logs claros en cada paso.",
+    subtasks:[
+      "Crear scripts/onboard-tenant.ts con dotenv + supabase admin client",
+      "Input: archivo JSON con tenant_config schema documentado",
+      "Insert tenant row + platform_access + tenant_membership del owner",
+      "Insert services, hours, FAQs, os_owner_identity, reminder_templates",
+      "Idempotente: si el slug ya existe, hace update en lugar de fail",
+      "Log colorido con emojis de check/cross en cada paso"
+    ],
+    kpis:[
+      {label:"Script funcional con JSON de prueba",target:"Crea tenant completo"},
+      {label:"Idempotencia",target:"Corre 2 veces sin error"},
+      {label:"Tiempo de ejecución",target:"<30s"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+  T("c-0422-2","carlos","2026-04-22","Documentar el schema de tenant_config.json",{
+    why:"Angel necesita saber qué data pedirle a Damiana. Si no está documentado, se pierde tiempo en idas y vueltas.",
+    how:"Crear docs/care-tenant-onboarding.md con schema JSON comentado + ejemplo lleno + checklist de data a recolectar del cliente.",
+    subtasks:[
+      "Ejemplo completo con clínica dental ficticia (servicios, precios aprox, horarios)",
+      "Checklist de 10 preguntas para hacerle al cliente antes del onboarding",
+      "Sección 'qué hacer si el cliente no tiene X' con defaults",
+      "Subir al repo en docs/ para que Angel lo lea"
+    ],
+    kpis:[{label:"Doc publicado",target:"En repo accesible a Angel"}],
+    durationMin:60,focus:2,slot:"afternoon"
+  }),
+  T("c-0422-3","carlos","2026-04-22","Deploy + smoke test end-to-end",{
+    why:"Día sin deploy es día muerto.",
+    how:"Push a main. Vercel deploy. Verificar /healthcheck responde 200. Test manual de login + dashboard.",
+    subtasks:["git push","Esperar deploy verde","curl /api/health","Login manual en prod","Screenshot del dashboard"],
+    kpis:[{label:"Deploy prod verde",target:"Sí"}],
+    durationMin:20,focus:1,slot:"evening"
+  }),
+
+  // Jue 23 abr
+  T("c-0423-1","carlos","2026-04-23","Diseñar y crear las 3 templates de Twilio",{
+    why:"Los reminders fuera de ventana 24h requieren templates aprobados por Meta. Sin esto, el no-show defense no funciona.",
+    how:"Escribir 3 templates en español MX: confirmación de cita, recordatorio 24h, recordatorio 2h. Someter a aprobación en Twilio Console. Guardar Content SIDs en Vercel env.",
+    subtasks:[
+      "Template 1: 'Hola {{1}}, te confirmamos tu cita el {{2}} a las {{3}} con la Dra. {{4}}. Responde SÍ para confirmar.'",
+      "Template 2 (24h antes): 'Recordatorio: tu cita es mañana {{1}} a las {{2}}. ¿Todo bien?'",
+      "Template 3 (2h antes): 'Te esperamos hoy a las {{1}} en {{2}}. Si no puedes venir, avísanos ya.'",
+      "Someter los 3 en Twilio Console categoría UTILITY",
+      "Guardar los 3 Content SID en Vercel env cuando aprueben (suele tardar 24h)"
+    ],
+    kpis:[
+      {label:"Templates sometidos",target:"3 de 3"},
+      {label:"Approval ETA",target:"<48h"}
+    ],
+    durationMin:90,focus:2,slot:"morning"
+  }),
+  T("c-0423-2","carlos","2026-04-23","Monitoring + alertas de crons",{
+    why:"Los 3 crons (no-show-defense, owner-summary, slot-cleanup) corren sin supervisión. Si fallan en silencio, Damiana no recibe sus recordatorios y se pierde la confianza desde día uno.",
+    how:"Agregar heartbeat en cada cron que escribe a tabla cron_heartbeats. Endpoint GET /api/admin/cron-health que detecta los que no reportan en ventana esperada. Si falla, mensaje a Telegram Eduardo.",
+    subtasks:[
+      "Migration: cron_heartbeats (cron_name, last_run_at, status)",
+      "Cada cron escribe heartbeat al terminar",
+      "Endpoint /api/admin/cron-health que consulta y devuelve red/green",
+      "Job cada 30min que pega a este endpoint desde Telegram Eduardo",
+      "Test: detener un cron, verificar que alerta llega en <30min"
+    ],
+    kpis:[
+      {label:"Crons monitoreados",target:"3 de 3"},
+      {label:"Alerta funciona",target:"Test verde"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Vie 24 abr
+  T("c-0424-1","carlos","2026-04-24","QA completo del flujo de agendar cita",{
+    why:"Antes de Damiana, hay que simular el flujo como paciente real y arreglar lo que rompa. Cada fricción que no detecto hoy la descubre ella en vivo.",
+    how:"Usar tenant demo clinica-sonrisa con mock adapter. Simular 5 conversaciones completas de paciente desde mi WhatsApp personal. Documentar cada fricción con screenshot.",
+    subtasks:[
+      "Conversación 1: paciente pide cita directo ('quiero limpieza mañana')",
+      "Conversación 2: paciente ambiguo ('necesito al dentista')",
+      "Conversación 3: paciente con pregunta fuera de scope ('cuánto cuesta corona?')",
+      "Conversación 4: paciente que reagenda ('cambiar mi cita del jueves')",
+      "Conversación 5: paciente que cancela ('ya no puedo ir')",
+      "Documentar en issues de Linear cada fricción encontrada",
+      "Fix inmediato de los P0 antes de cerrar el día"
+    ],
+    kpis:[
+      {label:"Conversaciones completadas",target:"5 de 5"},
+      {label:"P0 fixed hoy",target:"100%"}
+    ],
+    durationMin:240,focus:4,slot:"morning",blocker:true,milestone:true
+  }),
+  T("c-0424-2","carlos","2026-04-24","Grabar demo de 60-90 segundos del flujo",{
+    why:"Angel necesita material visual para pitchar. Un video vale más que 10 slides. Lo entrego hoy para que lo use en su visita a Damiana el 24 o 28.",
+    how:"Pantalla dividida: WhatsApp del lado izquierdo, dashboard admin del lado derecho. Simulo paciente pidiendo cita. Muestro el resumen del owner al final.",
+    subtasks:[
+      "Setup QuickTime con pantalla dividida",
+      "Guión mental de 60s: 'Paciente escribe → Vincent responde → cita creada → owner recibe resumen'",
+      "Grabar 3 takes, quedarme con el mejor",
+      "Cortar tiempos muertos en iMovie, exportar 1080p",
+      "Mandar a Angel por WhatsApp con 3 tips de cómo usarlo"
+    ],
+    kpis:[
+      {label:"Video final",target:"<90s, 1080p"},
+      {label:"Entregado a Angel",target:"Antes 18:00"}
+    ],
+    durationMin:90,focus:3,slot:"afternoon",blocker:true,milestone:true
+  }),
+
+  // Sab 25 abr
+  T("c-0425-1","carlos","2026-04-25","Polish del dashboard clínico",{
+    why:"Cuando Damiana entre a su panel, la impresión de los primeros 15 segundos decide si siente que está usando un producto serio. Vale la pena pulir esto un sábado.",
+    how:"Paleta ya está en #EEF4FB/#378ADD. Revisar métricas visibles, jerarquía, mobile, dark mode safari. Fix micro-issues de alineación y spacing.",
+    subtasks:[
+      "Revisar dashboard v3 en mobile Safari (Damiana usará celular)",
+      "Verificar que métricas cargan <2s (optimizar query si no)",
+      "Ajustar jerarquía visual: 'citas hoy' > 'mensajes pendientes' > otros",
+      "Test en modo standalone PWA",
+      "Deploy a preview y screenshot para mandarme a mí mismo y revisar en cama"
+    ],
+    kpis:[
+      {label:"Mobile perfecto",target:"Sin bugs visuales"},
+      {label:"Load time",target:"<2s en 4G"}
+    ],
+    durationMin:120,focus:2,slot:"morning"
+  }),
+  T("c-0425-2","carlos","2026-04-25","Revisar data que Angel levantó de Damiana",{
+    why:"Angel me pasa hoy los horarios/servicios/FAQs. Si falta algo crítico, hay que pedirlo antes del lunes para no bloquear la instalación.",
+    how:"Revisar el JSON contra el schema documentado. Checklist de 10 items. Si falta algo, mensaje inmediato a Angel para que lo consiga antes del lunes.",
+    subtasks:[
+      "Abrir el JSON que mandó Angel",
+      "Validar contra schema: services, hours, FAQs, owner_phone, cancellation_policy",
+      "Si falta algo: WhatsApp a Angel con lista clara de qué falta",
+      "Si está completo: confirmar a Angel con '✅ listo para lunes'"
+    ],
+    kpis:[{label:"Data 100% completa",target:"Lista antes del domingo 20:00"}],
+    durationMin:45,focus:2,slot:"afternoon",blocker:true
+  }),
+
+  // Dom 26 abr
+  T("c-0426-1","carlos","2026-04-26","Descanso real, sin código",{
+    why:"Mañana arranca la semana más pesada del mes. Ir sin batería es peor que ir sin plan.",
+    how:"Sin laptop abierta. Si surge algo, a la libreta y al lunes.",
+    subtasks:["Libreta a la mano para ideas sueltas","Teléfono laboral en DND","Revisar a las 9pm si el sender ya cambió de estado (solo mirar, no tocar)"],
+    kpis:[{label:"Horas de pantalla laboral",target:"0"}],
+    durationMin:0,focus:1,slot:"flexible"
+  }),
+
+  // Lun 27 abr — FASE 2
+  T("c-0427-1","carlos","2026-04-27","Verificar sender online + configurar webhook en Twilio Console",{
+    why:"Si el sender está online, hoy arranca el go-live. Si no, pivot al plan B y decidir en media hora.",
+    how:"Entrar a Twilio. Si online: configurar webhook URL en WhatsApp Sender Settings. Si offline: escalar ticket y decidir con Angel si pivoteamos fechas.",
+    subtasks:[
+      "Twilio Console → verificar status del sender",
+      "Si online: Webhook URL = https://luno-platform-tau.vercel.app/api/webhook/twilio-whatsapp",
+      "Mandar mensaje de prueba desde mi WhatsApp al sender",
+      "Verificar en logs de Vercel que el webhook se ejecutó",
+      "Si offline: reunión emergencia 15min con Angel para decidir fecha alt"
+    ],
+    kpis:[
+      {label:"Sender status",target:"Online ideal"},
+      {label:"Webhook config",target:"URL configurada"},
+      {label:"Test mensaje real",target:"Llega al sistema"}
+    ],
+    durationMin:60,focus:4,slot:"morning",blocker:true,milestone:true
+  }),
+  T("c-0427-2","carlos","2026-04-27","Onboardear tenant clinica-damiana",{
+    why:"Este es el momento de la verdad del script de onboarding. Si funciona limpio, el segundo cliente será más rápido.",
+    how:"Correr scripts/onboard-tenant.ts con el JSON de Damiana. Si falla, debug + fix + rerun. Verificar que todo quedó bien en DB.",
+    subtasks:[
+      "Revisar una última vez el JSON de Damiana",
+      "Correr: npm run onboard-tenant -- --input=damiana.json",
+      "Si error: fix, rerun idempotente",
+      "Query manual en Supabase: select * from tenants where slug='clinica-damiana'",
+      "Verificar que services, hours, FAQs y os_owner_identity estén correctos"
+    ],
+    kpis:[
+      {label:"Tenant creado sin errores",target:"Sí"},
+      {label:"Inspección DB completa",target:"Todo correcto"}
+    ],
+    durationMin:90,focus:3,slot:"morning",blocker:true
+  }),
+
+  // Mar 28 abr
+  T("c-0428-1","carlos","2026-04-28","Configurar owner mode de Damiana",{
+    why:"Cuando el bot pida ayuda, Damiana tiene que recibir el mensaje en su WhatsApp personal. Sin esto, el producto se siente incompleto.",
+    how:"Registrar su número personal en os_owner_identity. Verificar que escalation_alerts corre. Mandar un mensaje fuera-de-scope y confirmar que le llega.",
+    subtasks:[
+      "Update os_owner_identity con número personal de Damiana",
+      "Setup daily-summary cron para clinica-damiana",
+      "Mandar mensaje de prueba ambiguo desde WhatsApp paciente",
+      "Verificar que Damiana recibe WhatsApp de escalation",
+      "Timing: debe llegar en <60s"
+    ],
+    kpis:[
+      {label:"Escalation llega a Damiana",target:"<60s"},
+      {label:"Daily summary scheduled",target:"9am diario"}
+    ],
+    durationMin:90,focus:3,slot:"morning"
+  }),
+  T("c-0428-2","carlos","2026-04-28","Dry-run end-to-end con Angel",{
+    why:"Antes del go-live del viernes, probar con Angel como 'paciente' desde otro WhatsApp para detectar fricciones reales de conversación.",
+    how:"Zoom con Angel. Él manda mensajes reales como paciente ficticio. Yo observo logs en vivo y arreglo lo que salga.",
+    subtasks:[
+      "Agendar Zoom 1h con Angel a las 15:00",
+      "Angel manda 'hola quiero una cita' desde su número",
+      "Angel manda ambigüedad intencional",
+      "Angel intenta reagendar",
+      "Documentar cada fricción en Linear",
+      "Decidir cuáles son P0 para arreglar antes del viernes"
+    ],
+    kpis:[
+      {label:"Escenarios probados",target:"≥4"},
+      {label:"P0 identificados",target:"Lista clara"}
+    ],
+    durationMin:90,focus:4,slot:"afternoon",blocker:true
+  }),
+
+  // Mie 29 abr
+  T("c-0429-1","carlos","2026-04-29","Arreglar los P0 del dry-run",{
+    why:"Los bugs que apareciern ayer pueden romper el go-live. Hoy es el último día de margen real.",
+    how:"Priorizar por impacto en conversación del paciente. Fix uno por uno. Verificar con test manual cada fix.",
+    subtasks:[
+      "Abrir lista de P0 de Linear",
+      "Priorizar por: impacto en UX del paciente > impacto en owner > otros",
+      "Fix cada uno con commit descriptivo",
+      "Test manual post-fix",
+      "Deploy a prod al final del día"
+    ],
+    kpis:[
+      {label:"P0 cerrados",target:"100%"},
+      {label:"Deploy prod verde",target:"Sí"}
+    ],
+    durationMin:240,focus:4,slot:"morning",blocker:true
+  }),
+
+  // Jue 30 abr
+  T("c-0430-1","carlos","2026-04-30","Preparar el go-live: checklist + runbook",{
+    why:"El go-live de mañana es el momento clave del mes. Quiero un runbook literal para no tomar decisiones bajo presión.",
+    how:"Escribir docs/care-golive-runbook.md con pasos literales para mañana, rollback plan, teléfonos de emergencia, comandos a correr.",
+    subtasks:[
+      "Paso 1: verificar sender status a las 8am",
+      "Paso 2: mandar mensaje de prueba desde mi WhatsApp",
+      "Paso 3: avisar a Angel y Damiana que ya está vivo",
+      "Paso 4: monitorear logs cada 30min las primeras 4h",
+      "Rollback: cómo revertir si algo sale mal",
+      "Teléfonos: soporte Twilio, yo, Angel, Damiana"
+    ],
+    kpis:[{label:"Runbook listo",target:"Publicado en repo"}],
+    durationMin:90,focus:2,slot:"morning"
+  }),
+  T("c-0430-2","carlos","2026-04-30","Dashboard de monitoreo pre-golive",{
+    why:"Necesito ver todo en una sola vista mañana: mensajes entrantes, errores, crons, escalations. Si tengo que abrir 5 tabs, se me pasa algo.",
+    how:"Admin page con widgets: last 10 messages, active conversations, errors últimas 2h, cron statuses. Auto-refresh cada 30s.",
+    subtasks:[
+      "Crear /admin/live-monitor page",
+      "Widget: últimos 10 mensajes entrantes con tenant_slug",
+      "Widget: errores últimas 2h con link al detalle",
+      "Widget: crons status con last_run_at",
+      "Auto-refresh con SWR cada 30s",
+      "Deploy y guardar como pestaña para mañana"
+    ],
+    kpis:[{label:"Dashboard en producción",target:"Funcional"}],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Vie 1 may
+  T("c-0501-1","carlos","2026-05-01","Go-live oficial: Damiana recibe su primer mensaje real",{
+    why:"Este es el momento. 15% del mes apuntaba aquí.",
+    how:"Seguir el runbook literalmente. No improvisar. Si algo sale mal, rollback.",
+    subtasks:[
+      "08:00 verificar sender status",
+      "09:00 mandar mensaje de prueba",
+      "09:15 confirmar con Angel y Damiana que está activo",
+      "09:30-12:00 monitorear dashboard cada 15min",
+      "12:00 pausa comer si todo verde",
+      "14:00-18:00 monitoreo cada 30min",
+      "18:00 status update a Angel con números del día 1"
+    ],
+    kpis:[
+      {label:"Go-live sin rollback",target:"Sí"},
+      {label:"Mensajes procesados día 1",target:"≥1 real"},
+      {label:"Errores P0 durante el día",target:"0"}
+    ],
+    durationMin:240,focus:4,slot:"morning",milestone:true,blocker:true
+  }),
+
+  // Sab 2 may
+  T("c-0502-1","carlos","2026-05-02","Monitoreo intensivo día 2",{
+    why:"Las primeras 48h son las más frágiles. Si algo va a romper, rompe aquí.",
+    how:"Revisar dashboard cada 2-3 horas. Si aparece algo raro, arreglar en caliente. Si todo verde, descansar tarde.",
+    subtasks:[
+      "09:00 revisar métricas del día 1 completo",
+      "11:00, 14:00, 17:00 revisar dashboard",
+      "Si aparece error P0, fix + deploy en caliente",
+      "Si todo verde después de las 17:00, cerrar laptop y descansar"
+    ],
+    kpis:[
+      {label:"Uptime 48h",target:"100%"},
+      {label:"P0 durante 48h",target:"0"}
+    ],
+    durationMin:180,focus:2,slot:"flexible"
+  }),
+
+  // Dom 3 may
+  T("c-0503-1","carlos","2026-05-03","Descanso",{
+    why:"Semana más pesada completada. Recuperar para poder iterar con energía la próxima.",
+    how:"Sin pantalla laboral. Revisión rápida 9am solo para confirmar que nada explotó en la noche.",
+    subtasks:["Check de 5min a las 9am","Si verde, cerrar y descansar"],
+    kpis:[{label:"Horas pantalla trabajo",target:"<30min"}],
+    durationMin:30,focus:1,slot:"flexible"
+  }),
+
+  // Lun 4 may — FASE 3
+  T("c-0504-1","carlos","2026-05-04","Iterar sobre feedback real de Damiana",{
+    why:"3 días de uso real = señales mucho más valiosas que cualquier test. Priorizar top 3 mejoras que el cliente pidió o que se detectaron en logs.",
+    how:"Llamar a Damiana 20min. Preguntar: qué te pareció, qué sobra, qué falta. Cruzar con mis observaciones de logs. Elegir top 3 mejoras para esta semana. Máximo 3.",
+    subtasks:[
+      "Llamada 20min con Damiana al mediodía",
+      "Revisar agent_runs de los últimos 3 días: identificar patterns raros",
+      "Cruzar lo que ella dijo con lo que yo vi",
+      "Elegir 3 mejoras, máximo. El resto va al backlog.",
+      "Arrancar mejora #1 en la tarde"
+    ],
+    kpis:[
+      {label:"Llamada completada",target:"Sí"},
+      {label:"Top 3 mejoras priorizadas",target:"Documentadas"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+
+  // Mar 5 may
+  T("c-0505-1","carlos","2026-05-05","Instrumentar métricas de valor: citas confirmadas y no-shows",{
+    why:"Sin métricas de valor, no puedo hablar con Angel sobre pricing v2. Además Damiana necesita ver que Care genera ROI para recomendarnos.",
+    how:"Query en Supabase que calcula: citas creadas, confirmadas, no-show prevented, después-de-hora capturadas. Dashboard con números reales.",
+    subtasks:[
+      "Query: citas creadas por semana en clinica-damiana",
+      "Query: confirmation rate (confirmadas / creadas)",
+      "Query: no-show rate vs baseline (pedir a Damiana baseline histórico)",
+      "Dashboard widget con los 4 números",
+      "Export a CSV para mandar a Damiana como primer mini-reporte"
+    ],
+    kpis:[
+      {label:"Métricas visibles",target:"4 números reales"},
+      {label:"Primer CSV a Damiana",target:"Enviado"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Mie 6 may
+  T("c-0506-1","carlos","2026-05-06","Mejora #2 de feedback y deploy",{
+    why:"Iterar rápido sobre lo que el cliente real pide es lo que separa un piloto sellable de un experimento.",
+    how:"Según lo priorizado el lunes. Probablemente: mejor manejo de preguntas de precio, o templates más naturales, o velocidad de respuesta.",
+    subtasks:[
+      "Revisar la mejora #2 en Linear",
+      "Implementar con test",
+      "Deploy a prod con monitoreo post-deploy",
+      "Avisar a Damiana del cambio si le impacta"
+    ],
+    kpis:[{label:"Mejora live",target:"Sí"}],
+    durationMin:240,focus:3,slot:"morning"
+  }),
+
+  // Jue 7 may — GATE
+  T("c-0507-1","carlos","2026-05-07","Gate nivel 2 check: 7 días sin P0",{
+    why:"Si pasamos 7 días sin P0, Care oficialmente pasa a 'pilot-sellable' y Angel puede salir a vender con confianza.",
+    how:"Auditar logs del 30 abril al 7 mayo. Contar incidents clasificados P0. Si cero: declarar gate pasado. Si no: extender 48h.",
+    subtasks:[
+      "Query a incidents/logs del período",
+      "Clasificar cada evento raro: P0 / P1 / P2 / noise",
+      "Si 0 P0: escribir anuncio interno 'Care oficialmente pilot-sellable'",
+      "Mandar a Angel y arrancar sprint comercial",
+      "Si ≥1 P0: extender gate 48h con plan de fix inmediato"
+    ],
+    kpis:[
+      {label:"P0 en 7 días",target:"0"},
+      {label:"Gate pasado",target:"Sí ideal"}
+    ],
+    durationMin:60,focus:3,slot:"morning",milestone:true,blocker:true
+  }),
+  T("c-0507-2","carlos","2026-05-07","Mejora #3 y hardening final",{
+    why:"Último día de cambios antes del cierre de semana. Después de hoy, solo bug fixes.",
+    how:"La mejora #3 + polish general. Tests + deploy.",
+    subtasks:["Implementar mejora #3","Deploy + verify","Congelar features hasta el 11 may"],
+    kpis:[{label:"Mejora #3 live",target:"Sí"}],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Vie 8 may — PRIMER CIERRE
+  T("c-0508-1","carlos","2026-05-08","Activar a Damiana como cliente de pago",{
+    why:"Ya pasó el gate, ya hay valor demostrado. Hoy se vuelve cliente oficial.",
+    how:"Marcar tenant como 'paid' en DB. Setup del billing cycle. Confirmar con Angel que recibió el pago.",
+    subtasks:[
+      "Update tenants set billing_status='paid', subscription_start=today where slug='clinica-damiana'",
+      "Crear registro en subscriptions con monto y fecha",
+      "Confirmar con Angel: pago recibido, factura emitida",
+      "Deploy a Telegram Eduardo: primer cliente Care activo"
+    ],
+    kpis:[
+      {label:"Cliente marcado como paying",target:"Sí"},
+      {label:"Revenue registrado",target:"$2-4k MXN"}
+    ],
+    durationMin:60,focus:3,slot:"morning",milestone:true,blocker:true
+  }),
+
+  // Sab 9 may
+  T("c-0509-1","carlos","2026-05-09","Docs de onboarding para Angel self-service",{
+    why:"Para la semana 4 Angel debería poder correr el onboarding solo. Hoy documento paso a paso con capturas.",
+    how:"Doc con pasos literales + capturas + qué hacer si falla.",
+    subtasks:[
+      "Paso 1: cómo recibir data del cliente (link al schema)",
+      "Paso 2: cómo correr el script (comando exacto)",
+      "Paso 3: cómo verificar que quedó bien",
+      "Paso 4: cómo activar el sender",
+      "Troubleshooting: 5 errores típicos y sus fixes"
+    ],
+    kpis:[{label:"Doc publicado",target:"En repo y mandado a Angel"}],
+    durationMin:120,focus:2,slot:"morning"
+  }),
+
+  // Dom 10 may
+  T("c-0510-1","carlos","2026-05-10","Descanso",{
+    why:"Mitad del mes. Recuperar energía.",
+    how:"Cero pantalla laboral.",
+    subtasks:["Family day"],
+    kpis:[{label:"Pantalla trabajo",target:"0"}],
+    durationMin:0,focus:1,slot:"flexible"
+  }),
+
+  // Lun 11 may — FASE 4
+  T("c-0511-1","carlos","2026-05-11","Review semanal + priorización de mejoras semana 4",{
+    why:"Con 10 días de Damiana en vivo, hay data rica. Priorizar qué vale la pena del top 5.",
+    how:"Sacar números reales + feedback conjunto con Damiana. Elegir top 3 para semana 4. Máximo 3.",
+    subtasks:[
+      "Exportar métricas de valor: citas, confirm rate, no-show prevented",
+      "Llamada 15min con Damiana para feedback de semana 2",
+      "Juntar observaciones propias de logs",
+      "Top 3 priorizado para esta semana",
+      "El resto al backlog v1.1"
+    ],
+    kpis:[
+      {label:"Métricas exportadas",target:"Sí"},
+      {label:"Top 3 definido",target:"Sí"}
+    ],
+    durationMin:120,focus:3,slot:"morning"
+  }),
+
+  // Mar 12 may
+  T("c-0512-1","carlos","2026-05-12","Script v2 self-service para Angel",{
+    why:"Para que Angel pueda instalar el segundo cliente sin mí, el script tiene que validar mejor y dar mensajes humanos.",
+    how:"Refactor: validación estricta pre-run, mensajes de error claros, dry-run mode, output report.",
+    subtasks:[
+      "Validación estricta con zod del tenant_config.json",
+      "Dry-run mode que muestra qué haría sin ejecutar",
+      "Mensajes de error en español con acción recomendada",
+      "Output report al final: qué se creó, qué falló",
+      "Sesión 30min con Angel instalando cliente ficticio"
+    ],
+    kpis:[
+      {label:"Angel instala solo",target:"<90min"},
+      {label:"Script con validación",target:"Sí"}
+    ],
+    durationMin:240,focus:3,slot:"morning"
+  }),
+
+  // Mie 13 may
+  T("c-0513-1","carlos","2026-05-13","Reporte VINCENT MVP: primer reporte mensual al dueño",{
+    why:"Este es el moat. Si Damiana recibe un reporte que nadie más le da, el switching cost sube y se convierte en advocate.",
+    how:"Template HTML con métricas del mes + insights narrativos generados por Claude. Se manda por WhatsApp con PDF adjunto.",
+    subtasks:[
+      "Template HTML con sección métricas + sección insights",
+      "Query que saca las 4 métricas de valor del mes",
+      "Prompt a Claude Sonnet para generar 3 insights narrativos (ej: 'Sra. García cancela siempre los lunes')",
+      "Render a PDF con puppeteer",
+      "Cron mensual primer día del mes",
+      "Primera versión mandada a Damiana el 1 de junio"
+    ],
+    kpis:[
+      {label:"MVP funcional",target:"Se genera PDF real"},
+      {label:"Primera versión lista",target:"Para mandar 1 junio"}
+    ],
+    durationMin:300,focus:4,slot:"morning"
+  }),
+
+  // Jue 14 may
+  T("c-0514-1","carlos","2026-05-14","Polish del dashboard del tenant con métricas de valor",{
+    why:"Damiana (y los próximos) deben ver sus números cada que entren, no solo en el reporte mensual. Refuerzo constante del valor.",
+    how:"Agregar sección 'Este mes' al dashboard: citas, confirmadas, no-shows evitados. Trend vs mes pasado.",
+    subtasks:[
+      "Widget 'Citas del mes' con número grande",
+      "Widget 'Confirmation rate' con %",
+      "Widget 'No-shows evitados' con estimado en $",
+      "Trend: flechita arriba/abajo vs mes pasado",
+      "Deploy y mandar captura a Damiana"
+    ],
+    kpis:[{label:"Dashboard con métricas de valor",target:"Live"}],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+
+  // Vie 15 may
+  T("c-0515-1","carlos","2026-05-15","Onboarding segundo cliente Care (si Angel cerró)",{
+    why:"Si Angel cerró, hoy se repite el proceso con mejoras. Si no cerró, polish del producto.",
+    how:"Correr script v2 con la data del nuevo cliente. Observar a Angel haciéndolo la primera vez. Intervenir solo si se atora.",
+    subtasks:[
+      "Si hay cliente: Angel corre el script conmigo mirando (Zoom)",
+      "Si falta data: Angel la consigue en <2h",
+      "Si no hay cliente: polish backlog V1.1",
+      "En cualquier caso: deploy final de la semana"
+    ],
+    kpis:[
+      {label:"Segundo tenant live",target:"Idealmente sí"},
+      {label:"Angel self-service validated",target:"Sí"}
+    ],
+    durationMin:240,focus:3,slot:"morning"
+  }),
+
+  // Sab 16 may
+  T("c-0516-1","carlos","2026-05-16","Revisión técnica semana",{
+    why:"Cierre de semana 4 operativa. Dejar todo registrado.",
+    how:"Zoom 60min con Angel. Métricas, decisiones, ajustes finales para la semana de cierre.",
+    subtasks:[
+      "Exportar métricas de la semana",
+      "Zoom Angel: números + pipeline + decisiones",
+      "Lista de ajustes finales para lunes-martes"
+    ],
+    kpis:[{label:"Review completada",target:"Con minuta"}],
+    durationMin:90,focus:2,slot:"morning"
+  }),
+
+  // Dom 17 may
+  T("c-0517-1","carlos","2026-05-17","Descanso",{
+    why:"Última semana corta. Preservar energía para el cierre.",
+    how:"Cero pantalla laboral.",
+    subtasks:["Descanso total"],
+    kpis:[{label:"Pantalla trabajo",target:"0"}],
+    durationMin:0,focus:1,slot:"flexible"
+  }),
+
+  // Lun 18 may
+  T("c-0518-1","carlos","2026-05-18","Stabilization y preparación mes 2",{
+    why:"No introducir cambios grandes. Todo lo que salga va al backlog para junio.",
+    how:"Bug fixes ligeros. Preparar el backlog de junio con lo acumulado del mes.",
+    subtasks:[
+      "Revisar backlog y clasificar para junio",
+      "Bug fixes P1/P2 acumulados",
+      "Deploy final ligero si aplica",
+      "No introducir features nuevas"
+    ],
+    kpis:[{label:"Backlog mes 2 listo",target:"Priorizado"}],
+    durationMin:180,focus:2,slot:"morning"
+  }),
+
+  // Mar 19 may — FIN
+  T("c-0519-1","carlos","2026-05-19","Revisión de 30 días con Angel",{
+    why:"Cierre oficial del mes. Honestidad brutal sobre qué funcionó, qué no, qué pivotar.",
+    how:"Zoom 90min. Métricas vs meta. Qué funcionó. Qué pivotar. Plan mes 2.",
+    subtasks:[
+      "Métricas finales: clientes pagando, MRR, deploys, uptime",
+      "Qué funcionó mejor de lo esperado",
+      "Qué no funcionó y por qué",
+      "Decisiones para mes 2",
+      "Minuta compartida"
+    ],
+    kpis:[
+      {label:"Revisión completa",target:"Sí"},
+      {label:"Plan mes 2 escrito",target:"Sí"}
+    ],
+    durationMin:120,focus:3,slot:"morning",milestone:true
+  }),
+  T("c-0519-2","carlos","2026-05-19","Cierre mental del mes",{
+    why:"Si no se cierra mentalmente, el mes que entra arranca cansado.",
+    how:"Nada de laptop después de las 17:00. Cena afuera, caminar, algo que marque un corte.",
+    subtasks:["Laptop cerrada 17:00","Cena afuera","Mañana: día 1 mes 2"],
+    kpis:[{label:"Cierre hecho",target:"Sí"}],
+    durationMin:0,focus:1,slot:"evening"
+  }),
+
+
+  /* ================================ ANGEL — VINCENT 100% ================================ */
+
+  // Dom 19 abr — FASE 1: Foundations Vincent
+  T("a-0419-1","angel","2026-04-19","Auditoría de marca Vincent actual + gaps",{
+    why:"Antes de producir contenido necesito baseline: qué hay de marca Vincent hoy, qué funciona, qué falta. Sin esto la producción se siente inconsistente desde día 1.",
+    how:"1.5h. Revisar landing vincent.mx, IG/TikTok @vincent si existe, assets en Drive, brand bible previa. Hacer doc de gaps priorizado.",
+    subtasks:[
+      "Abrir vincent.mx y capturar: copy, tono, paleta exacta, tipografía",
+      "Revisar redes sociales Vincent actuales (si hay) y evaluar consistencia",
+      "Buscar brand bible / brand kit en Drive o crear carpeta nueva",
+      "Doc gaps: qué está vivo, qué es inconsistente, qué falta (lista 10+ items)",
+      "Priorizar top 5 gaps a cerrar antes del 25 abr"
+    ],
+    kpis:[
+      {label:"Auditoría documentada",target:"Sí"},
+      {label:"Gaps priorizados",target:"≥5"}
+    ],
+    durationMin:90,focus:2,slot:"morning"
+  }),
+  T("a-0419-2","angel","2026-04-19","Calendario editorial Vincent 30 días",{
+    why:"Sin plan editorial la producción es caótica. Necesito saber cuántas piezas, qué formato, qué día. Construye ritmo + evita blank page daily.",
+    how:"Notion o Sheet. 4 pillars: Educativo (qué hace Care), Proof (Damiana/data), Founder (Carlos + yo, backstage), Sector (dolores del dentista). Distribuir 30 posts + 12 reels en 31 días.",
+    subtasks:[
+      "Definir 4 content pillars con descripción de 1 línea cada uno",
+      "Tabla 31 días con: fecha, pillar, formato (reel/carrusel/post), tema",
+      "Bloquear 4 días de grabación en calendario (22 abr, 24 abr, 29 abr, 13 may)",
+      "Semana 1 completa con copy draft",
+      "Compartir con Carlos (solo visibilidad, no edición)"
+    ],
+    kpis:[
+      {label:"Plan editorial",target:"31 días llenos"},
+      {label:"Días grabación bloqueados",target:"4"}
+    ],
+    durationMin:60,focus:2,slot:"afternoon"
+  }),
+
+  // Lun 20 abr
+  T("a-0420-1","angel","2026-04-20","Brand kit Vincent definitivo v1",{
+    why:"Sin kit visual claro, Canva se vuelve collage inconsistente. Templates + colores + tipografías listas aceleran producción de cada pieza 5x.",
+    how:"Figma. Paleta ivory/cream del landing + Fraunces (Display) + Inter (Body). 3 templates base: reel cover (9:16), carrusel (1:1, 3 slides), story (9:16 con safe zones).",
+    subtasks:[
+      "Capturar paleta exacta del landing (hex codes) — ivory, ink, copper, sage",
+      "Crear frame Figma 'Vincent Brand Kit' con colores + tipografías",
+      "Template reel cover con espacio para título + CTA",
+      "Template carrusel 3 slides (intro, contenido, CTA)",
+      "Template story con safe zones IG",
+      "Exportar todo a Drive/Vincent/Brand — compartir link con Carlos"
+    ],
+    kpis:[
+      {label:"Templates base",target:"3 exportados"},
+      {label:"Brand kit accesible",target:"Drive link compartido"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+  T("a-0420-2","angel","2026-04-20","Lista 30 clínicas target Monclova/Saltillo/MTY",{
+    why:"Sin pipeline de prospectos el mes se muere. Necesito lista filtrada para arrancar outreach jueves.",
+    how:"Google Maps + Instagram. Criterios: 1-3 doctores, WhatsApp en bio, reseñas que mencionen fricción de respuesta o recepción, zonas con demanda.",
+    subtasks:[
+      "Google Maps 'dentista Monclova' → lista 10 (excluyendo Damiana)",
+      "Google Maps 'dentista Saltillo centro + Del Valle' → lista 10",
+      "Google Maps 'dentista Monterrey Del Valle/San Pedro' → lista 10",
+      "Instagram búsqueda por zona → filtrar por alto engagement",
+      "Notion: tabla con nombre, ciudad, IG, WhatsApp, dueño conocido, score (1-5)"
+    ],
+    kpis:[
+      {label:"Clínicas identificadas",target:"≥30"},
+      {label:"Con contacto verificable",target:"≥20"}
+    ],
+    durationMin:180,focus:2,slot:"afternoon"
+  }),
+
+  // Mar 21 abr
+  T("a-0421-1","angel","2026-04-21","3 posts foundation marca Vincent",{
+    why:"Primera semana de contenido Vincent. Necesito 3 piezas ancla que definan qué somos. De ahí sale la narrativa de todo lo demás.",
+    how:"Usar brand kit de ayer. Post 1 carrusel 'Qué es Vincent Care' (educativo). Post 2 reel 15s 'Para dentistas que pierden citas' (pain). Post 3 carrusel 'Fundado por ingenieros industriales' (authority).",
+    subtasks:[
+      "Escribir 3 copys en Notion antes de diseñar (no diseñar improvisando texto)",
+      "Diseñar post 1: carrusel 3 slides educativo",
+      "Grabar + editar post 2: reel 15s talking head pain point",
+      "Diseñar post 3: carrusel 2 slides fundadores/authority",
+      "Programar en Meta Business Suite: martes, jueves, sábado"
+    ],
+    kpis:[
+      {label:"Piezas publicadas",target:"3"},
+      {label:"Formato mixto",target:"1 reel + 2 carruseles"}
+    ],
+    durationMin:150,focus:3,slot:"morning"
+  }),
+  T("a-0421-2","angel","2026-04-21","Pitch deck Care v1 + pricing card",{
+    why:"Las reuniones presenciales la próxima semana necesitan materiales. Sin deck es conversación, con deck es cierre 3x más rápido.",
+    how:"Figma 6 slides: problema (35% llamadas perdidas), promesa (Vincent contesta 24/7 WhatsApp), cómo funciona (3 pasos), qué incluye, precio ($1.5-2k/mes), siguiente paso.",
+    subtasks:[
+      "Confirmar pricing final con Carlos ($1.5k o $2k/mes primer cliente)",
+      "Recolectar 2-3 datos duros (benchmark llamadas perdidas en clínicas dentales MX)",
+      "Diseñar 6 slides con brand kit",
+      "Exportar 2 versiones: PDF alta calidad para imprimir + JPG slide único para WhatsApp",
+      "Imprimir 5 copias en papel de calidad para reuniones"
+    ],
+    kpis:[
+      {label:"Deck completo",target:"6 slides"},
+      {label:"Versiones",target:"Impresa + WhatsApp + PDF"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Mié 22 abr — DÍA DE GRABACIÓN #1
+  T("a-0422-1","angel","2026-04-22","Grabación #1: hero reel Vincent + 2 talking heads",{
+    why:"Sin video de marca Vincent, cuando alguien pregunta '¿qué es?' no hay referencia visual. Hero reel 60-90s vende antes que el deck.",
+    how:"Setup casa/oficina con luz natural (ventana grande) + mic lavalier. Grabar 3 videos: hero reel marca, founder 'por qué lo construimos', pain point 'qué pasa si no lo tienes'.",
+    subtasks:[
+      "Setup: encuadre, luz, mic probado con grabación de 30s",
+      "Escribir 3 guiones A4 antes de grabar (no improvisar)",
+      "Grabar hero reel 60-90s (mínimo 12 tomas distintas del mismo guión)",
+      "Grabar talking head founder 'por qué construimos Vincent' (3 tomas)",
+      "Grabar talking head 'qué pasa si no tienes Vincent' (3 tomas)",
+      "Backup inmediato en Drive + disco externo"
+    ],
+    kpis:[
+      {label:"Videos grabados",target:"3"},
+      {label:"Material útil",target:"≥15 min bruto"}
+    ],
+    durationMin:240,focus:3,slot:"morning"
+  }),
+  T("a-0422-2","angel","2026-04-22","Pitch deck Growth Vincent v1",{
+    why:"Growth Vincent es línea de negocio separada que necesita su propio deck. Sin esto no puedo cerrar el primer cliente Growth Vincent (meta del mes).",
+    how:"Figma 8 slides: qué es Growth Vincent, los 3 bundles (Brand System $7.9k, Content $7.9k/mo, Demand $13.9k), qué incluye cada uno, pricing, vs agencia tradicional, Vincent como dogfood, siguiente paso.",
+    subtasks:[
+      "Confirmar offering exacto con Carlos (qué entrega cada bundle, qué NO)",
+      "Diseñar slide por bundle con entregables + timeline + pricing",
+      "Tabla comparativa 'vs agencia tradicional' (transparencia, velocidad, dueño del contenido)",
+      "Versión impresa PDF + versión 1-slide WhatsApp",
+      "Imprimir 3 copias de calidad"
+    ],
+    kpis:[
+      {label:"Deck Growth",target:"8 slides"},
+      {label:"3 bundles presentados",target:"Con entregables"}
+    ],
+    durationMin:150,focus:3,slot:"afternoon"
+  }),
+
+  // Jue 23 abr
+  T("a-0423-1","angel","2026-04-23","Outreach tanda 1: 15 mensajes WhatsApp dentistas",{
+    why:"Pipeline arranca hoy. 15 mensajes target → 3-5 respuestas → 2 reuniones semana próxima. Sin volumen consistente no hay pipeline.",
+    how:"Script personalizado por dentista con referencia específica de su IG ('vi tu reel del lunes'). Tres párrafos: observación, pain WhatsApp, invitación a demo 20min.",
+    subtasks:[
+      "Script base en Notion con 3 variables personalizables",
+      "Personalizar 15 mensajes (4-5 min c/u) referenciando detalle real de su IG",
+      "Enviar en bloque 11:00-13:00 (horario óptimo consulta dentista)",
+      "Tracking Notion: nombre, ciudad, enviado_at, leyó_si_no, respondió",
+      "Follow-up 24h después a los que leyeron y no respondieron"
+    ],
+    kpis:[
+      {label:"Mensajes enviados",target:"15"},
+      {label:"Respuestas 48h",target:"≥3"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+  T("a-0423-2","angel","2026-04-23","Edición hero reel Vincent + publicar",{
+    why:"El hero reel grabado ayer tiene que salir antes del fin de semana para ganar momentum orgánico. Si se queda en borrador, no existe.",
+    how:"CapCut. Cortes rápidos, subtítulos con Fraunces/Inter, música trending con licencia, CTA final 'conoce a Vincent'.",
+    subtasks:[
+      "Seleccionar mejores tomas (revisar las 12, elegir 6)",
+      "Montaje primer corte con cortes cada 2-3s",
+      "Subtítulos cada frase, tipografía de brand kit",
+      "Música trending o licenciada (Epidemic Sound)",
+      "CTA final con logo Vincent + 'agenda tu demo'",
+      "Publicar IG + TikTok + LinkedIn (mismo video, copies distintos)"
+    ],
+    kpis:[
+      {label:"Reel publicado",target:"Sí"},
+      {label:"Plataformas",target:"3"}
+    ],
+    durationMin:120,focus:3,slot:"afternoon"
+  }),
+
+  // Vie 24 abr — DÍA DE GRABACIÓN #2
+  T("a-0424-1","angel","2026-04-24","Grabación #2: batch 6 piezas marca Vincent",{
+    why:"Producción batch es la única forma sostenible. 1 día = 6 piezas = 2 semanas de contenido. Sin batch, producción drip que drena energía.",
+    how:"5h en studio casa. Lista 6 piezas pre-guionadas mezclando pillars. Variar vestuario/ángulo si posible para que no se vean grabadas mismo día.",
+    subtasks:[
+      "Checklist 6 guiones impresos",
+      "Grabar 3 talking heads (educativo + sector)",
+      "Grabar 2 reacciones/demos (Vincent Care en acción con simulación)",
+      "Grabar 1 testimonio founder sobre construcción del producto",
+      "Backup inmediato Drive + disco",
+      "Selección crítica: marcar mejor toma por pieza antes de cerrar día"
+    ],
+    kpis:[
+      {label:"Piezas grabadas",target:"≥6"},
+      {label:"Horas útiles",target:"≥4"}
+    ],
+    durationMin:300,focus:3,slot:"morning"
+  }),
+  T("a-0424-2","angel","2026-04-24","Data Damiana → Carlos para onboarding",{
+    why:"Carlos necesita data completa de clínica Damiana para poder onboardear el lunes (horarios, staff, servicios, tono). Sin esto el bot no habla como ellos y se retrasa go-live.",
+    how:"Llamada 30min con Dra. Damiana con guía estructurada. Grabar audio con permiso. Estructurar en doc compartido con Carlos.",
+    subtasks:[
+      "Guía 15 preguntas: horarios por día, staff, servicios + precios, FAQs, tono voz, política cita",
+      "Llamada 30min (agendar con Damiana la mañana)",
+      "Transcribir respuestas en doc estructurado con schema que Carlos definió",
+      "Compartir en Drive/Care/clinica-damiana.md",
+      "Confirmar en WhatsApp con Carlos: 'data entregada, revísala'"
+    ],
+    kpis:[
+      {label:"Data completa entregada",target:"Sí"},
+      {label:"Plazo",target:"Viernes 20:00"}
+    ],
+    durationMin:90,focus:3,slot:"afternoon",blocker:true,milestone:true
+  }),
+
+  // Sáb 25 abr
+  T("a-0425-1","angel","2026-04-25","Edición batch + programar semana 2",{
+    why:"El contenido grabado ayer necesita estar listo para salir lun-sáb próximo. Sin edición batch el miércoles estoy reventando y perdiendo flow.",
+    how:"Sesión 4h. Editar 6 piezas. Programar en Meta Business Suite + TikTok scheduler. Dejar cola llena para semana 2 completa.",
+    subtasks:[
+      "Editar reel 1 (talking head)",
+      "Editar reel 2 (demo/reacción)",
+      "Editar reel 3 (talking head sector)",
+      "Editar carrusel 1 (educativo)",
+      "Editar carrusel 2 (proof/founder)",
+      "Editar post estático (quote founder)",
+      "Programar las 6 piezas lun-sáb con horarios óptimos por plataforma"
+    ],
+    kpis:[
+      {label:"Piezas editadas",target:"6"},
+      {label:"Piezas programadas",target:"6"}
+    ],
+    durationMin:240,focus:3,slot:"morning"
+  }),
+
+  // Dom 26 abr
+  T("a-0426-1","angel","2026-04-26","Preparación reuniones MTY día lunes",{
+    why:"Mañana y martes son reuniones presenciales. Sin prep van a ser caóticas — retraso entre clínicas, deck sin imprimir, iPad sin cargar.",
+    how:"2h tarde. Checklist logística + materiales + outfit.",
+    subtasks:[
+      "Optimizar rutas Google Maps con tráfico lunes",
+      "Confirmar hora con cada doctor 24h antes por WhatsApp",
+      "Imprimir 5 decks Care + 3 decks Growth extra",
+      "Cargar iPad 100% con video demo + deck PDF offline",
+      "Preparar carpeta física 'Vincent' con tarjetas + contrato plantilla",
+      "Outfit listo la noche antes"
+    ],
+    kpis:[
+      {label:"Reuniones confirmadas",target:"≥3"},
+      {label:"Materiales listos",target:"Sí"}
+    ],
+    durationMin:90,focus:2,slot:"afternoon"
+  }),
+
+  // Lun 27 abr — FASE 2: Pipeline + primer Care live
+  T("a-0427-1","angel","2026-04-27","Reuniones presenciales día 1: 3 clínicas",{
+    why:"Primer ciclo presencial. Ahí se validan objeciones reales, se ajusta pitch en vivo, se levantan pilots. Cara a cara es donde se cierra el primer Care.",
+    how:"3 reuniones de 45 min. Estructura: small talk 5', pain discovery 10', demo 10', propuesta 10', cierre 10'. Grabar audio con permiso.",
+    subtasks:[
+      "Reunión 1 clínica A (11:00-11:45)",
+      "Reunión 2 clínica B (12:30-13:15)",
+      "Reunión 3 clínica C (15:00-15:45)",
+      "Apuntes post-meeting inmediatos en Notes (5 min c/u)",
+      "Follow-up WhatsApp antes de dormir a los 3 con siguiente paso concreto",
+      "Clasificar cada una: hot / warm / cold + razón"
+    ],
+    kpis:[
+      {label:"Reuniones hechas",target:"3"},
+      {label:"Pipeline clasificado",target:"3 clasificados"}
+    ],
+    durationMin:360,focus:4,slot:"morning",milestone:true,blocker:true
+  }),
+
+  // Mar 28 abr
+  T("a-0428-1","angel","2026-04-28","Reuniones día 2 + propuestas mismas noche",{
+    why:"Segundo día presencial. Las propuestas se mandan el mismo día de la reunión, no 'luego'. Cada día de demora baja probabilidad de cierre 10%.",
+    how:"2-3 reuniones adicionales. Al regresar, propuesta personalizada por cada una de los 5-6 de ayer+hoy.",
+    subtasks:[
+      "Reunión 4, 5, 6 (si aplican hoy)",
+      "Template propuesta en Notion con variables",
+      "Personalizar propuesta por cada clínica (5-10 min c/u)",
+      "Enviar propuesta PDF + WhatsApp seguimiento",
+      "CRM actualizado con status y siguiente paso"
+    ],
+    kpis:[
+      {label:"Propuestas enviadas",target:"≥5"},
+      {label:"Tiempo respuesta",target:"<24h cada una"}
+    ],
+    durationMin:240,focus:3,slot:"flexible"
+  }),
+  T("a-0428-2","angel","2026-04-28","Adelantar contenido Vincent semana 3",{
+    why:"Si me cargo de reuniones + grabación esta semana, no puedo editar en vivo. Adelantar da colchón para no quedar sin publicar.",
+    how:"2h noche. Editar 2-3 piezas del batch del viernes pasado. Programar semana 3.",
+    subtasks:[
+      "Revisar qué quedó del batch del 24 abr sin editar",
+      "Editar 3 piezas pendientes",
+      "Programar MBS + TikTok para semana 3 (may 4-10)",
+      "Confirmar calendario editorial próxima semana"
+    ],
+    kpis:[
+      {label:"Piezas semana 3 listas",target:"≥5"}
+    ],
+    durationMin:120,focus:2,slot:"evening"
+  }),
+
+  // Mié 29 abr — DÍA DE GRABACIÓN #3
+  T("a-0429-1","angel","2026-04-29","Grabación #3: entrevista founder Carlos + backstage",{
+    why:"Marca Vincent necesita cara. Carlos hablando como CTO del producto construye autoridad. Backstage de preparación Damiana = contenido antes de que pase nada.",
+    how:"3h con Carlos en su setup de trabajo. Entrevista estructurada 8 preguntas. B-roll código + dashboard + café.",
+    subtasks:[
+      "8 preguntas preparadas: qué construimos, por qué, cómo nos diferenciamos, qué aprendimos en abril",
+      "Setup cámara + luz en espacio de Carlos",
+      "Grabar entrevista 45 min (no editar mental, dejarlo correr)",
+      "B-roll: pantalla con código, dashboard Vincent, teclado, café, vista",
+      "Grabar cortes sueltos 'frases sueltas' para editing"
+    ],
+    kpis:[
+      {label:"Material founder",target:"≥30 min bruto"},
+      {label:"B-roll",target:"≥10 shots"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+  T("a-0429-2","angel","2026-04-29","Follow-up agresivo pipeline post-reuniones",{
+    why:"Sin push las propuestas se quedan vivas pero inertes. 48h y 5 días son los momentos clave de follow-up.",
+    how:"Mensaje personalizado + llamada a los 2 más calientes si no responden en 6h.",
+    subtasks:[
+      "Revisar status cada propuesta (leyó / respondió / cero)",
+      "Follow-up WhatsApp a los 6 con pregunta concreta cada uno",
+      "Llamada a los 2 más calientes",
+      "Ofrecer pilot con descuento a los tibios (-15% primer mes si firma esta semana)",
+      "Agendar segunda reunión con al menos uno"
+    ],
+    kpis:[
+      {label:"Follow-ups enviados",target:"6"},
+      {label:"Segunda reunión agendada",target:"≥1"}
+    ],
+    durationMin:150,focus:3,slot:"afternoon"
+  }),
+
+  // Jue 30 abr
+  T("a-0430-1","angel","2026-04-30","Ensayo go-live Damiana + assets post-launch",{
+    why:"Mañana es el go-live. Preparar materiales de lanzamiento hoy: 3 piezas listas para publicar minuto 0 cuando Damiana arranque.",
+    how:"3h tarde. Diseñar carrusel 'primer cliente vivo', reel 30s celebración, copy LinkedIn profesional + IG editorial.",
+    subtasks:[
+      "Carrusel 4 slides 'Vincent Care arranca con Damiana'",
+      "Reel 30s celebración con b-roll de preparación de esta semana",
+      "Copy IG editorial (narrativa, no corporativo)",
+      "Copy LinkedIn profesional (founder voice, aprendizajes)",
+      "Guardar todos como drafts en MBS — listos para publicar mañana"
+    ],
+    kpis:[
+      {label:"Assets post-launch",target:"3"},
+      {label:"Listos antes 20:00",target:"Sí"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+  T("a-0430-2","angel","2026-04-30","Dry-run con Carlos: ser paciente en el flujo",{
+    why:"Antes de abrir a público real, yo pruebo el bot completo como paciente. Encuentro fricciones que Carlos desde adentro no ve (copy, tono, tiempos).",
+    how:"Zoom 1h. Yo mando mensajes desde mi WhatsApp al sender Damiana. Carlos observa logs. Documentar cada fricción.",
+    subtasks:[
+      "Zoom 15:00 con Carlos",
+      "Probar: agendar cita",
+      "Probar: confirmar cita 24h antes",
+      "Probar: cambiar cita",
+      "Probar: cancelar",
+      "Probar: preguntar precio/servicios",
+      "Probar: escribir 'emergencia'",
+      "Documentar 5+ cosas a pulir con Carlos antes del viernes"
+    ],
+    kpis:[
+      {label:"Flujos probados",target:"≥6"},
+      {label:"Issues documentados",target:"≥5"}
+    ],
+    durationMin:90,focus:3,slot:"afternoon",blocker:true
+  }),
+
+  // Vie 1 may — GO LIVE DAMIANA
+  T("a-0501-1","angel","2026-05-01","Acompañar go-live Damiana + capturar reacción",{
+    why:"Momento histórico del mes. Capturarlo en video es más valioso que cualquier testimonio escrito futuro. No se repite.",
+    how:"Presente remoto en Zoom o en clínica si posible. Cámara desde 10 min antes del switch-on. Capturar Damiana cuando llega primer mensaje real.",
+    subtasks:[
+      "Conectarse a llamada de switch-on con Carlos (9:00)",
+      "Grabar pantalla + reacción Damiana al primer mensaje test",
+      "Primera conversación real cuando llegue primer paciente",
+      "Entrevista 10 min post-live con Damiana (con permiso para publicar)",
+      "Backup inmediato todo el material en Drive"
+    ],
+    kpis:[
+      {label:"Video raw capturado",target:"Sí"},
+      {label:"Entrevista post-live",target:"≥10 min"}
+    ],
+    durationMin:180,focus:4,slot:"morning",milestone:true,blocker:true
+  }),
+  T("a-0501-2","angel","2026-05-01","Publicar anuncio: primer cliente Vincent Care vivo",{
+    why:"Momentum de anuncio. Los assets listos ayer salen hoy. Primera señal pública de tracción real.",
+    how:"45 min. Publicar los 3 assets. Responder primeros 20 comentarios en caliente.",
+    subtasks:[
+      "Publicar carrusel IG (horario pico 19:00)",
+      "Publicar reel 30s (cross-post TikTok)",
+      "Publicar LinkedIn founder voice",
+      "Responder primeros 20 comentarios",
+      "Repost story si Damiana comenta/comparte"
+    ],
+    kpis:[
+      {label:"Plataformas",target:"3"},
+      {label:"Engagement 4h",target:"≥30 interacciones"}
+    ],
+    durationMin:60,focus:2,slot:"evening"
+  }),
+
+  // Sáb 2 may
+  T("a-0502-1","angel","2026-05-02","Seguimiento pipeline post go-live: 6 tibios",{
+    why:"El anuncio del go-live es arma de ventas. Mandar video + carrusel a los 6 prospectos tibios que no habían respondido transforma tibios en calientes.",
+    how:"Lista tibios. Mensaje personalizado 'oye, acabamos de lanzar con Dra. Damiana, checa esto'. Adjuntar assets publicados ayer.",
+    subtasks:[
+      "Lista 6 tibios con mayor potencial",
+      "Mensaje personalizado por cada uno (referencia reunión previa)",
+      "Adjuntar reel + carrusel del go-live",
+      "Tracker actualizado con 'post-live touch' status",
+      "Seguimiento 48h si no responden"
+    ],
+    kpis:[
+      {label:"Mensajes post-live",target:"6"},
+      {label:"Respuestas",target:"≥3"}
+    ],
+    durationMin:90,focus:2,slot:"morning"
+  }),
+
+  // Dom 3 may
+  T("a-0503-1","angel","2026-05-03","Descanso + edición testimonio Damiana draft",{
+    why:"Descanso activo. Dejar primer corte del testimonio raw del viernes para que esté listo de editar final miércoles.",
+    how:"2h tarde relajado. Primera edición sin pulir.",
+    subtasks:[
+      "Revisar tomas raw del 1 mayo",
+      "Seleccionar 3-4 mejores momentos",
+      "Primer corte de 2 min sin música ni subtítulos",
+      "Guardar como draft v1 en Drive"
+    ],
+    kpis:[{label:"Draft testimonio v1",target:"Listo"}],
+    durationMin:120,focus:2,slot:"afternoon"
+  }),
+
+  // Lun 4 may — FASE 3: Case + primer Growth Vincent
+  T("a-0504-1","angel","2026-05-04","Cerrar primera reunión MTY/Monclova",{
+    why:"Si la semana cierra sin propuesta firmada de Care, el mes peligra. Push comercial serio hoy a los 2-3 más calientes.",
+    how:"Llamada directa a los 2 más calientes. Ofrecer pilot reducido ($1k primer mes). Cerrar en la llamada o fecha firme.",
+    subtasks:[
+      "Llamada 1 clínica caliente (propuesta específica por nombre)",
+      "Llamada 2 clínica caliente",
+      "Ofrecer pilot $1k primer mes si firman esta semana",
+      "Pedir decisión con plazo (jueves máx)",
+      "Mandar contrato si acepta, fecha de visita de firma"
+    ],
+    kpis:[
+      {label:"Llamadas",target:"≥2"},
+      {label:"Cerrado o fecha firme",target:"Sí"}
+    ],
+    durationMin:120,focus:4,slot:"morning",blocker:true
+  }),
+  T("a-0504-2","angel","2026-05-04","Contenido Vincent semana 4 programado",{
+    why:"No frenar producción de contenido por perseguir ventas. Consistencia semanal construye marca que hace más fácil el próximo cierre.",
+    how:"1.5h tarde. Editar 2-3 piezas pendientes, programar semana 4.",
+    subtasks:[
+      "Revisar inventario de contenido sin editar",
+      "Editar 2-3 piezas",
+      "Programar semana 4 (may 11-17)",
+      "Verificar cola MBS llena"
+    ],
+    kpis:[{label:"Piezas semana 4",target:"≥5 programadas"}],
+    durationMin:90,focus:2,slot:"afternoon"
+  }),
+
+  // Mar 5 may
+  T("a-0505-1","angel","2026-05-05","Case study Damiana preliminar (5 días)",{
+    why:"Después de 5 días de uso real hay data preliminar. Usar eso como arma de ventas es 10x más potente que el deck genérico. Diferencia absoluta entre tanda 1 y tanda 2.",
+    how:"Pedir a Carlos el log de conversaciones/citas de Damiana. Armar carrusel con 3 métricas reales + quote de Damiana.",
+    subtasks:[
+      "Pedir data a Carlos (mensajes, citas agendadas, no-shows evitados)",
+      "Destacar 3 métricas clave con contexto",
+      "Carrusel 4 slides: problema → Vincent → resultados → quote",
+      "Versión reel 30s con datos en motion graphics",
+      "Versión screenshot para WhatsApp outreach",
+      "Publicar IG + LinkedIn + TikTok"
+    ],
+    kpis:[
+      {label:"Case study publicado",target:"Sí"},
+      {label:"Formatos",target:"3"}
+    ],
+    durationMin:180,focus:3,slot:"morning",milestone:true
+  }),
+
+  // Mié 6 may
+  T("a-0506-1","angel","2026-05-06","Outreach tanda 2: 15 mensajes con case study",{
+    why:"El case study es el diferencial. Ya no digo 'confía en mí', ahora digo 'mira lo que hicimos hace una semana'. Conversion rate esperado 3x vs tanda 1.",
+    how:"15 prospectos nuevos (no repetidos con tanda 1). Mensaje con case study como adjunto principal.",
+    subtasks:[
+      "Lista 15 nuevos de la base de 30 sin tocar",
+      "Script refinado con case study como hook principal",
+      "Enviar todos en 2h (11:00-13:00)",
+      "Tracker con 'tanda 2' label",
+      "Follow-up 48h programado"
+    ],
+    kpis:[
+      {label:"Tanda 2 enviada",target:"15"},
+      {label:"Respuestas 72h",target:"≥5"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+  T("a-0506-2","angel","2026-05-06","Edición entrevista founder Carlos",{
+    why:"Material del 29 abr necesita salir antes del 10 may para construir autoridad de marca en el momento que el case study está circulando.",
+    how:"2h edición. Versión editorial 3 min + versión reel 60s.",
+    subtasks:[
+      "Selección tomas (45 min → 3 min útiles)",
+      "Montaje primer corte con b-roll intercalado",
+      "Subtítulos editoriales con brand kit tipografía",
+      "Música sutil (Epidemic Sound)",
+      "Versión 60s reel para IG + TikTok"
+    ],
+    kpis:[
+      {label:"Versión 3 min",target:"Sí"},
+      {label:"Versión 60s",target:"Sí"}
+    ],
+    durationMin:120,focus:3,slot:"afternoon"
+  }),
+
+  // Jue 7 may
+  T("a-0507-1","angel","2026-05-07","Reuniones semana 2: 3 prospects calientes",{
+    why:"Los leads de outreach tanda 1 ya maduraron. Ahora son reuniones de cierre, no discovery. El case study los acelera.",
+    how:"3 presenciales si MTY/Monclova, Zoom si otras ciudades. 45 min cada una enfocadas en cerrar.",
+    subtasks:[
+      "Confirmar 3 reuniones del día",
+      "Ejecutar reunión 1 (cierre-focused)",
+      "Ejecutar reunión 2",
+      "Ejecutar reunión 3",
+      "Propuesta formal mismo día a los 3",
+      "Follow-up 24h con fecha firme de decisión"
+    ],
+    kpis:[
+      {label:"Reuniones",target:"≥3"},
+      {label:"Propuestas enviadas",target:"3"}
+    ],
+    durationMin:240,focus:4,slot:"morning",milestone:true
+  }),
+  T("a-0507-2","angel","2026-05-07","Preparar firma Damiana para mañana",{
+    why:"Mañana es cierre formal. Contrato + pago. Sin prep hay fricción innecesaria el día del evento de marca.",
+    how:"Revisar contrato con Carlos, tener link de pago, confirmar hora y modalidad con Damiana.",
+    subtasks:[
+      "Revisar contrato Care v1 con Carlos",
+      "Generar link Stripe o preparar datos de transferencia",
+      "Confirmar con Damiana hora y modalidad mañana",
+      "Preparar cámara para capturar firma",
+      "Preparar detalle simbólico (flores o café para llevar)"
+    ],
+    kpis:[
+      {label:"Contrato listo",target:"Sí"},
+      {label:"Link pago listo",target:"Sí"}
+    ],
+    durationMin:90,focus:3,slot:"afternoon",blocker:true
+  }),
+
+  // Vie 8 may — FIRMA DAMIANA
+  T("a-0508-1","angel","2026-05-08","Firma + pago primer mes Damiana",{
+    why:"Primer dólar real de Vincent. Primer MRR. Evento de marca. No es una transacción, es un hito.",
+    how:"Visita clínica o Zoom según modalidad acordada. Firma contrato + cobro primer mes $1.5-2k. Documentar todo.",
+    subtasks:[
+      "Visita/Zoom firma 11:00",
+      "Firma contrato ambas partes",
+      "Confirmar pago recibido (Stripe o transfer)",
+      "Foto/video de la firma con permiso",
+      "Confirmar a Carlos 'Damiana paying, activar como tal'",
+      "Actualizar CRM: status = paying",
+      "Mensaje agradecimiento a Damiana"
+    ],
+    kpis:[
+      {label:"Pago recibido",target:"$1.5-2k"},
+      {label:"Foto/video",target:"Sí"}
+    ],
+    durationMin:120,focus:4,slot:"morning",milestone:true,blocker:true
+  }),
+  T("a-0508-2","angel","2026-05-08","Anuncio primer cliente paying Vincent",{
+    why:"Hito público. Anunciar que Vincent tiene primer cliente paying refuerza social proof de manera 10x vs anuncio de go-live.",
+    how:"Post LinkedIn founder voice. Carrusel IG editorial. Reel 30s con b-roll firma.",
+    subtasks:[
+      "Post LinkedIn 'primer cliente paying Vincent Care' con aprendizajes honestos",
+      "Carrusel IG 3 slides (hito → qué aprendimos → qué viene)",
+      "Reel 30s con b-roll de la firma (si Damiana lo autorizó)",
+      "Cross-post TikTok",
+      "Responder primeros 20 comentarios en caliente"
+    ],
+    kpis:[
+      {label:"Plataformas",target:"3"},
+      {label:"Alcance 24h",target:"≥1000 impr"}
+    ],
+    durationMin:90,focus:2,slot:"afternoon"
+  }),
+
+  // Sáb 9 may
+  T("a-0509-1","angel","2026-05-09","Sprint edición: contenido semana 5-6",{
+    why:"Adelantar producción. El mes entra a cierre y no puedo pelear al mismo tiempo contra pipeline + contenido. Colchón de 10 piezas editadas da paz.",
+    how:"5h mañana+tarde. Editar y programar 10 piezas para may 12-24.",
+    subtasks:[
+      "Inventario piezas pendientes de editar",
+      "Editar batch 5 reels",
+      "Editar batch 3 carruseles",
+      "Editar 2 posts estáticos",
+      "Programar todo MBS + TikTok",
+      "Verificar publishing schedule hasta 24 may"
+    ],
+    kpis:[
+      {label:"Piezas editadas",target:"≥10"},
+      {label:"Calendar semana 5-6",target:"Lleno"}
+    ],
+    durationMin:300,focus:3,slot:"morning"
+  }),
+
+  // Dom 10 may
+  T("a-0510-1","angel","2026-05-10","Descanso + revisión ligera pipeline",{
+    why:"Medio mes. Revisión rápida, no trabajo.",
+    how:"1h café. Abrir CRM, estado de cada prospecto, identificar top 3 para cerrar próxima semana.",
+    subtasks:[
+      "Abrir tracker pipeline",
+      "Marcar estado cada prospecto (hot/warm/cold)",
+      "Identificar top 3 para cerrar semana 5",
+      "Plan del lunes listo"
+    ],
+    kpis:[{label:"Top 3 identificados",target:"Sí"}],
+    durationMin:60,focus:1,slot:"flexible"
+  }),
+
+  // Lun 11 may — FASE 4: Segundo Care + retro
+  T("a-0511-1","angel","2026-05-11","Push cierre primer Growth Vincent",{
+    why:"Si Growth Vincent no vendió nada al 11 may, esa línea de negocio fracasa el mes. Push concentrado hoy a los 3 más calientes con oferta de cierre.",
+    how:"Llamadas directas. Ofrecer Brand System pilot ($7.9k one-time) o Content Engine primer mes a 50%.",
+    subtasks:[
+      "Llamada 1 prospecto Growth A",
+      "Llamada 2 Growth B",
+      "Llamada 3 Growth C",
+      "Ofrecer pilot con incentivo de cierre esta semana",
+      "Pedir decisión antes del viernes",
+      "Propuesta formal si aceptan"
+    ],
+    kpis:[
+      {label:"Llamadas",target:"3"},
+      {label:"Cerrado o fecha firme",target:"≥1"}
+    ],
+    durationMin:180,focus:4,slot:"morning",blocker:true,milestone:true
+  }),
+
+  // Mar 12 may
+  T("a-0512-1","angel","2026-05-12","Outbound tanda 3: 20 mensajes (pipeline junio)",{
+    why:"Pipeline de junio. Lo que no se siembra hoy no florece el próximo mes. Con case study ya publicado + testimonio, conversion es mejor que nunca.",
+    how:"Lista nueva 20 clínicas. Mensaje con case study Damiana + video lanzamiento como hooks.",
+    subtasks:[
+      "Lista 20 nuevos (Saltillo + Monclova + MTY)",
+      "Script refinado con case + video como hooks",
+      "Enviar todos en 2h",
+      "Tracker tanda 3",
+      "Follow-up 48h programado"
+    ],
+    kpis:[
+      {label:"Mensajes",target:"20"},
+      {label:"Respuestas 72h",target:"≥6"}
+    ],
+    durationMin:150,focus:3,slot:"morning"
+  }),
+
+  // Mié 13 may — DÍA DE GRABACIÓN #4
+  T("a-0513-1","angel","2026-05-13","Grabación #4: contenido pillar metodología",{
+    why:"Cuarta sesión de grabación. Enfoque en metodología y diferenciación para elevar marca de 'otra herramienta' a 'autoridad del sector'.",
+    how:"3h setup ordenado. 4 piezas: metodología (carrusel motion), diferenciación (talking head), detrás de cámaras, vision statement.",
+    subtasks:[
+      "4 guiones listos impresos",
+      "Grabar talking head metodología",
+      "Grabar diferenciación (por qué Vincent vs otras)",
+      "Grabar detrás de cámaras construcción",
+      "Grabar vision statement founder",
+      "Backup inmediato"
+    ],
+    kpis:[
+      {label:"Piezas pillar grabadas",target:"4"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+
+  // Jue 14 may
+  T("a-0514-1","angel","2026-05-14","Video testimonio Damiana final (editorial)",{
+    why:"Testimonio raw del 1 may necesita versión editorial pulida. Herramienta principal de ventas para junio en adelante — vale la inversión de edición.",
+    how:"3h edición cuidadosa. 2 min cortes cinematográficos, música, color grading, subtítulos editoriales.",
+    subtasks:[
+      "Guión del montaje (story arc: problema → descubrimiento → resultado)",
+      "Primer corte 2 min",
+      "Color grading consistente",
+      "Música licenciada que apoye emocionalmente",
+      "Subtítulos editoriales con brand kit tipografía",
+      "Mastering audio",
+      "Versiones: 2 min + 60s reel + 30s short"
+    ],
+    kpis:[
+      {label:"Versiones finales",target:"3"},
+      {label:"Publicado",target:"Hoy"}
+    ],
+    durationMin:240,focus:3,slot:"morning",milestone:true
+  }),
+  T("a-0514-2","angel","2026-05-14","3 reuniones pipeline (push cierre)",{
+    why:"Cerca del cierre de mes, reuniones en cadena para empujar pipeline a firma antes del 15 may.",
+    how:"Bloque tarde. 3 Zoom o presenciales según quién.",
+    subtasks:[
+      "Reunión 1 (45 min)",
+      "Reunión 2 (45 min)",
+      "Reunión 3 (45 min)",
+      "Propuestas mismo día",
+      "Follow-up 24h agendado"
+    ],
+    kpis:[
+      {label:"Reuniones",target:"3"},
+      {label:"Propuestas enviadas",target:"3"}
+    ],
+    durationMin:180,focus:3,slot:"afternoon"
+  }),
+
+  // Vie 15 may
+  T("a-0515-1","angel","2026-05-15","Cerrar segundo Care + handoff a Carlos",{
+    why:"Segundo Care cierra mes con $3k MRR combinado. Sin segundo, la meta queda a medias. Esta es la fecha límite razonable.",
+    how:"Reunión de firma presencial. Contrato, primer pago, handoff técnico a Carlos para onboarding.",
+    subtasks:[
+      "Firma contrato segundo Care",
+      "Pago primer mes recibido",
+      "Pasar data de clínica a Carlos (plantilla Damiana)",
+      "Coordinar calendario onboarding con Carlos",
+      "Foto momento + post anuncio"
+    ],
+    kpis:[
+      {label:"Firma",target:"Sí"},
+      {label:"Pago primer mes",target:"$1.5-2k"},
+      {label:"Data pasada a Carlos",target:"Sí"}
+    ],
+    durationMin:180,focus:4,slot:"morning",milestone:true
+  }),
+
+  // Sáb 16 may
+  T("a-0516-1","angel","2026-05-16","Retro contenido mayo: qué jaló, qué no",{
+    why:"Antes de cerrar mes, análisis honesto de métricas. Performance por pillar, por formato, por día — eso informa producción junio.",
+    how:"2h análisis. Meta Business insights, TikTok analytics, LinkedIn analytics. Tabla performance + 3 aprendizajes.",
+    subtasks:[
+      "Export insights IG (alcance, engagement, saves)",
+      "Export insights TikTok (views, follow-through)",
+      "Export insights LinkedIn (impressions, reactions)",
+      "Tabla con todas las piezas x alcance x engagement",
+      "Top 5 piezas (qué tuvieron en común)",
+      "Flop 5 piezas (qué evitar)",
+      "3 aprendizajes claros para junio"
+    ],
+    kpis:[
+      {label:"Análisis hecho",target:"Sí"},
+      {label:"Aprendizajes documentados",target:"≥3"}
+    ],
+    durationMin:120,focus:2,slot:"afternoon"
+  }),
+
+  // Dom 17 may
+  T("a-0517-1","angel","2026-05-17","Descanso + prep retro con Carlos",{
+    why:"Mañana es retro formal. Prep ligero 1h para no improvisar martes.",
+    how:"1h tarde. Abrir datos, estructurar qué presento.",
+    subtasks:[
+      "Dashboard MRR Vincent (Care + Growth Vincent)",
+      "Pipeline actual final",
+      "Contenido producido total",
+      "Reuniones hechas total",
+      "3 éxitos / 3 fracasos",
+      "Propuesta 3 decisiones clave para junio"
+    ],
+    kpis:[{label:"Prep retro",target:"Completo"}],
+    durationMin:60,focus:2,slot:"afternoon"
+  }),
+
+  // Lun 18 may
+  T("a-0518-1","angel","2026-05-18","Reporte mes: números + aprendizajes",{
+    why:"Formal retro documentado. Sirve para referir hacia atrás en junio/julio. Memoria operativa del negocio.",
+    how:"Doc compartido estructurado: MRR, pipeline, contenido, 3 decisiones concretas.",
+    subtasks:[
+      "MRR final Care + Growth Vincent",
+      "Pipeline final (calientes, tibios, muertos)",
+      "Contenido final: piezas producidas, alcance total, engagement",
+      "Outbound total: mensajes enviados, respuestas, reuniones",
+      "3 decisiones concretas para junio",
+      "Compartir con Carlos antes martes 9:00"
+    ],
+    kpis:[
+      {label:"Reporte escrito",target:"Sí"},
+      {label:"Compartido",target:"Sí"}
+    ],
+    durationMin:180,focus:3,slot:"morning"
+  }),
+
+  // Mar 19 may — CIERRE 30 DÍAS
+  T("a-0519-1","angel","2026-05-19","Retro 30 días con Carlos + plan junio",{
+    why:"Cierre oficial. Mes 1 como empresa Vincent operando en serio. Decisiones concretas para mes 2, no vibes.",
+    how:"Zoom 2h. Review sobre reporte del lunes. Salir con meta junio, plan concreto, ajustes a plan actual.",
+    subtasks:[
+      "Revisar reporte juntos",
+      "Top 3 aprendizajes comerciales honestos",
+      "Top 3 cosas a pivotar en junio",
+      "Meta junio: MRR Care, MRR/one-time Growth Vincent",
+      "Plan junio arranca oficial el 20 may",
+      "Minuta compartida en Drive"
+    ],
+    kpis:[
+      {label:"Revisión completada",target:"Sí"},
+      {label:"Plan junio escrito",target:"Sí"}
+    ],
+    durationMin:120,focus:3,slot:"morning",milestone:true
+  }),
+  T("a-0519-2","angel","2026-05-19","Post público primer mes Vincent",{
+    why:"Transparencia pública construye marca y confianza con pipeline futuro. 'Así operamos en mes 1' es contenido raro y valioso.",
+    how:"LinkedIn post founder voice honesto. Carrusel IG con 3 números + 3 aprendizajes.",
+    subtasks:[
+      "Redactar post LinkedIn honesto (aprendizajes reales, no highlight reel)",
+      "1 número fuerte (MRR, clientes, algo concreto)",
+      "1 aprendizaje contra-intuitivo",
+      "Qué viene en junio (transparencia)",
+      "Publicar LinkedIn + carrusel IG"
+    ],
+    kpis:[
+      {label:"Post publicado",target:"Sí"},
+      {label:"Plataformas",target:"2"}
+    ],
+    durationMin:90,focus:2,slot:"afternoon"
+  })
+];
+
+/* ================ RENDER + LOGIC ================ */
+const STORAGE_KEY = "vincent_plan_apr19_may19_v4";
+const START_DATE = new Date("2026-04-19T00:00:00");
+const END_DATE   = new Date("2026-05-19T23:59:59");
+const TODAY = new Date();
+
+const FOCUS_LABELS = {1:"Ligero",2:"Enfoque",3:"Profundo",4:"Intocable"};
+const SLOT_LABELS = {morning:"Mañana",afternoon:"Tarde",evening:"Noche",flexible:"Flexible"};
+
+let state = load();
+function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{done:{},expanded:{}};}catch{return{done:{},expanded:{}};}}
+// Persist locally. When authenticated to cloud, `done` is also pushed via cloudUpsertDone().
+function saveLocal(){localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
+function save(){saveLocal();}
+
+function fmtDate(iso){
+  const d=new Date(iso+"T00:00:00");
+  const days=['dom','lun','mar','mié','jue','vie','sáb'];
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+}
+function dayOfMonth(iso){return new Date(iso+"T00:00:00").getDate();}
+function isSameDay(iso, other){
+  const d=new Date(iso+"T00:00:00");
+  return d.toDateString()===other.toDateString();
+}
+function isoToday(){
+  const t=new Date();
+  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+}
+function diffDays(iso){
+  const d=new Date(iso+"T00:00:00");
+  return Math.round((d-TODAY)/(1000*60*60*24));
+}
+
+function focusBadge(f){return `<span class="focus-dot focus-${f}">${FOCUS_LABELS[f]}</span>`;}
+function slotBadge(s){return s==="flexible" ? "" : `<span class="meta">${SLOT_LABELS[s]}</span>`;}
+function durationBadge(min){
+  if(!min) return "";
+  const h=Math.floor(min/60), m=min%60;
+  const label = h>0 ? (m>0?`${h}h ${m}m`:`${h}h`) : `${m}m`;
+  return `<span class="meta">${label}</span>`;
+}
+function pomoBadge(p){return p>0?`<span class="meta">${p} × 25m</span>`:"";}
+function milestoneBadge(){return `<span class="meta meta-gold">Momento clave</span>`;}
+function blockerBadge(){return `<span class="meta meta-red">Crítica</span>`;}
+function phaseBadge(phaseId){
+  const p = PHASES.find(x=>x.id===phaseId);
+  if(!p) return "";
+  return `<span class="meta" style="color:${p.color};border-color:${p.color}40;">${p.short}</span>`;
+}
+
+function renderExpandContent(task){
+  let html = '';
+  if(task.why){
+    html += `<div class="mb-5"><span class="sub-label">Por qué importa</span><p class="text-sm text-[var(--ink-soft)] leading-relaxed">${task.why}</p></div>`;
+  }
+  if(task.how){
+    html += `<div class="mb-5"><span class="sub-label">Cómo ejecutarlo</span><div class="how-box">${task.how}</div></div>`;
+  }
+  if(task.subtasks && task.subtasks.length > 0){
+    html += `<div class="mb-5"><span class="sub-label">Paso a paso</span><div>`;
+    task.subtasks.forEach((st, i) => {
+      html += `<div class="subtask-item"><span class="subtask-num">${String(i+1).padStart(2,'0')}</span><span class="subtask-body">${st}</span></div>`;
+    });
+    html += `</div></div>`;
+  }
+  if(task.kpis && task.kpis.length > 0){
+    html += `<div><span class="sub-label">Qué medir</span><div>`;
+    task.kpis.forEach(k => {
+      html += `<div class="kpi-row"><span class="k-label">${k.label}</span><span class="k-target">${k.target}</span></div>`;
+    });
+    html += `</div></div>`;
+  }
+  return html;
+}
+
+function taskCard(task){
+  const doneCls = state.done[task.id] ? "task-done" : "";
+  const milestoneCls = task.milestone ? "task-milestone" : "";
+  const blockerCls = task.blocker ? "task-blocker" : "";
+  const expandOpen = state.expanded[task.id] ? "open" : "";
+  const chevronOpen = state.expanded[task.id] ? "open" : "";
+  const hasDetail = task.why || task.how || task.subtasks?.length || task.kpis?.length;
+
+  const badges = [
+    focusBadge(task.focus),
+    slotBadge(task.slot),
+    durationBadge(task.durationMin),
+    pomoBadge(task.pomodoros),
+    task.milestone ? milestoneBadge() : "",
+    task.blocker ? blockerBadge() : ""
+  ].filter(x=>x).join("");
+
+  return `
+    <article class="task-card card p-6 ${doneCls} ${milestoneCls} ${blockerCls} fade-in" data-task-id="${task.id}" data-focus="${task.focus}" data-blocker="${task.blocker?1:0}" data-done="${state.done[task.id]?1:0}">
+      <div class="flex items-start gap-4">
+        <input type="checkbox" class="cbx mt-1.5" ${state.done[task.id]?"checked":""} onchange="toggleTask('${task.id}')" />
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <div class="flex-1 min-w-0">
+              <h4 class="task-title font-display text-xl md:text-[22px] text-[var(--ink)] leading-[1.25]" style="font-weight:500;">${task.title}</h4>
+              <div class="flex items-center gap-1.5 mt-3 flex-wrap">${badges}</div>
+            </div>
+            ${hasDetail ? `<button class="disclose-btn text-xs uppercase tracking-[0.14em] font-semibold text-[var(--vibe-muted)] flex items-center gap-1 flex-shrink-0" onclick="toggleExpand('${task.id}')"><span>${state.expanded[task.id]?"Ocultar":"Detalle"}</span><span class="chevron ${chevronOpen}">›</span></button>`:""}
+          </div>
+          ${hasDetail ? `<div class="expand-panel ${expandOpen}" id="exp-${task.id}">${renderExpandContent(task)}</div>`:""}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function toggleTask(id){
+  const next = !state.done[id];
+  if(next) state.done[id] = true; else delete state.done[id];
+  saveLocal();
+  render();
+  // Push to cloud if authenticated (optimistic; failure logs to console).
+  if(typeof cloudUpsertDone === "function" && syncCtx?.user){
+    cloudUpsertDone(id, next);
+  }
+}
+
+function toggleExpand(id){
+  state.expanded[id] = !state.expanded[id];
+  save();
+  // just toggle the classes without full re-render to avoid losing scroll
+  const panel = document.getElementById(`exp-${id}`);
+  const btn = document.querySelector(`[data-task-id="${id}"] .disclose-btn`);
+  if(panel && btn){
+    panel.classList.toggle('open');
+    const chev = btn.querySelector('.chevron');
+    chev.classList.toggle('open');
+    btn.querySelector('span:first-child').textContent = panel.classList.contains('open')?"Ocultar":"Detalle";
+  }
+}
+
+/* Carlos + Angel tasks */
+let filters = {carlos:"all", angel:"all"};
+
+function filterTasks(owner){
+  const f = filters[owner];
+  return TASKS.filter(t=>t.owner===owner).filter(t=>{
+    if(f==="all") return true;
+    if(f==="pending") return !state.done[t.id];
+    if(f==="done") return !!state.done[t.id];
+    if(f==="f3-4") return t.focus>=3;
+    if(f==="blocker") return t.blocker;
+    return true;
+  });
+}
+
+function renderOwnerTasks(owner){
+  const container = document.getElementById(`${owner}TasksContainer`);
+  if(!container) return;
+  const tasks = filterTasks(owner);
+  const byDate = {};
+  tasks.forEach(t=>{(byDate[t.date]||(byDate[t.date]=[])).push(t);});
+  const sortedDates = Object.keys(byDate).sort();
+  let html = '';
+  sortedDates.forEach(date=>{
+    const isToday = isSameDay(date, TODAY);
+    const items = byDate[date];
+    const doneCount = items.filter(t=>state.done[t.id]).length;
+    const phase = PHASES.find(p=>p.id===items[0].phase);
+    html += `
+      <details ${isToday?'open':''} class="border border-[var(--line)] rounded-2xl overflow-hidden" style="background:var(--cream);">
+        <summary class="px-6 py-5 flex items-center justify-between gap-4 hover:bg-[var(--line-soft)]/40 transition">
+          <div class="flex items-center gap-4">
+            ${isToday?'<span class="today-pill">Hoy</span>':''}
+            <div>
+              <div class="font-display text-xl text-[var(--ink)]" style="font-weight:500;">${fmtDate(date)}</div>
+              ${phase?`<div class="text-[10px] uppercase tracking-[0.18em] mt-1" style="color:${phase.color};font-weight:600;">${phase.short} · ${phase.name}</div>`:""}
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="text-xs text-[var(--muted)]">${doneCount}/${items.length}</div>
+            <div class="w-24 pbar"><div style="width:${(doneCount/items.length)*100}%"></div></div>
+            <span class="text-[var(--muted)] text-sm">›</span>
+          </div>
+        </summary>
+        <div class="px-6 pb-6 pt-2 space-y-4">
+          ${items.map(taskCard).join("")}
+        </div>
+      </details>
+    `;
+  });
+  container.innerHTML = html;
+
+  // stats
+  const allOwnerTasks = TASKS.filter(t=>t.owner===owner);
+  const doneTotal = allOwnerTasks.filter(t=>state.done[t.id]).length;
+  const pct = allOwnerTasks.length ? Math.round((doneTotal/allOwnerTasks.length)*100) : 0;
+  document.getElementById(`${owner}Pct`).textContent = `${pct}%`;
+  document.getElementById(`${owner}Count`).textContent = `${doneTotal} de ${allOwnerTasks.length} tareas`;
+}
+
+/* Overview */
+function renderOverview(){
+  // Days elapsed
+  const today = new Date();
+  const daysElapsed = Math.max(1, Math.min(31, Math.ceil((today - START_DATE)/(1000*60*60*24))+1));
+  document.getElementById('daysElapsed').textContent = today < START_DATE ? "—" : daysElapsed;
+
+  // Stats
+  const total = TASKS.length;
+  const doneCount = TASKS.filter(t=>state.done[t.id]).length;
+  document.getElementById('kpiDone').textContent = doneCount;
+  document.getElementById('kpiTotal').textContent = `de ${total}`;
+
+  const pct = total ? (doneCount/total) : 0;
+  document.getElementById('globalPct').textContent = `${Math.round(pct*100)}%`;
+  const circ = 2*Math.PI*52;
+  document.getElementById('globalRing').setAttribute('stroke-dashoffset', circ*(1-pct));
+
+  const milestones = TASKS.filter(t=>t.milestone).length;
+  document.getElementById('kpiMilestones').textContent = milestones;
+
+  const todayStr = isoToday();
+  const todayTasks = TASKS.filter(t=>t.date===todayStr);
+  document.getElementById('kpiToday').textContent = todayTasks.length;
+
+  // Today label
+  const todayLabel = document.getElementById('todayLabel');
+  if(todayLabel){
+    if(today < START_DATE){todayLabel.textContent = "Arranca 19 abril";}
+    else if(today > END_DATE){todayLabel.textContent = "Plan cerrado";}
+    else{todayLabel.textContent = fmtDate(todayStr);}
+  }
+
+  // Today tasks list
+  const todayList = document.getElementById('todayTasks');
+  if(todayList){
+    if(todayTasks.length===0){
+      todayList.innerHTML = `<p class="text-sm text-[var(--muted)] italic">Sin tareas para hoy. Aprovecha.</p>`;
+    }else{
+      todayList.innerHTML = todayTasks.map(t=>{
+        const color = t.owner==="carlos" ? "var(--indigo)" : "var(--copper)";
+        const doneCls = state.done[t.id]?"opacity-50 line-through":"";
+        return `<div class="flex items-start gap-3 py-2 ${doneCls}">
+          <span class="w-2 h-2 rounded-full mt-2 flex-shrink-0" style="background:${color};"></span>
+          <div class="flex-1 text-sm text-[var(--ink-soft)]">${t.title}</div>
+          ${t.milestone?'<span class="meta meta-gold">Clave</span>':""}
+        </div>`;
+      }).join("");
+    }
+  }
+
+  // Upcoming milestones
+  const upcoming = TASKS.filter(t=>t.milestone && !state.done[t.id] && new Date(t.date+"T00:00:00")>=today).slice(0,5);
+  const upcomingEl = document.getElementById('upcomingMilestones');
+  if(upcomingEl){
+    upcomingEl.innerHTML = upcoming.length===0 ? `<p class="text-sm text-[var(--muted)] italic">Todos los momentos clave cerrados o pasados.</p>` : upcoming.map(t=>{
+      const color = t.owner==="carlos" ? "var(--indigo)" : "var(--copper)";
+      return `<div class="border-l-2 pl-4 py-1" style="border-color:${color};">
+        <div class="text-[10px] uppercase tracking-[0.16em] font-semibold text-[var(--muted)]">${fmtDate(t.date)}</div>
+        <div class="text-sm text-[var(--ink)] mt-1 font-medium">${t.title}</div>
+      </div>`;
+    }).join("");
+  }
+
+  // Weekly breakdown
+  const weekly = document.getElementById('weeklyBreakdown');
+  if(weekly){
+    weekly.innerHTML = PHASES.map(p=>{
+      const tasksInPhase = TASKS.filter(t=>t.phase===p.id);
+      const doneInPhase = tasksInPhase.filter(t=>state.done[t.id]).length;
+      const pctP = tasksInPhase.length ? Math.round((doneInPhase/tasksInPhase.length)*100) : 0;
+      return `<div class="card p-6" style="border-top:3px solid ${p.color};">
+        <div class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color:${p.color};">${p.short}</div>
+        <div class="font-display text-xl text-[var(--ink)] mt-1" style="font-weight:500;">${p.name}</div>
+        <p class="text-xs text-[var(--muted)] mt-3 leading-relaxed">${p.desc}</p>
+        <div class="mt-4 pbar"><div style="width:${pctP}%;background:${p.color};"></div></div>
+        <div class="text-[10px] uppercase tracking-[0.14em] text-[var(--muted)] mt-2">${doneInPhase}/${tasksInPhase.length} · ${fmtDate(p.start)} → ${fmtDate(p.end)}</div>
+      </div>`;
+    }).join("");
+  }
+
+  // Phase strip
+  const phaseStrip = document.getElementById('phaseStrip');
+  if(phaseStrip){
+    phaseStrip.innerHTML = PHASES.map(p=>{
+      const isActive = todayStr>=p.start && todayStr<=p.end;
+      return `<div class="flex items-start gap-3 p-3 rounded-xl ${isActive?"bg-white/60":""}" style="${isActive?'border:1px solid '+p.color+'40;':''}">
+        <div class="w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${isActive?'soft-pulse':''}" style="background:${p.color};"></div>
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.16em] font-semibold" style="color:${p.color};">${p.short}</div>
+          <div class="text-sm font-medium text-[var(--ink)] mt-0.5">${p.name}</div>
+          <div class="text-[10px] text-[var(--muted)] mt-1">${dayOfMonth(p.start)}-${dayOfMonth(p.end)} ${(new Date(p.start+'T00:00:00').getMonth()===new Date(p.end+'T00:00:00').getMonth())?'':''}</div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  // Focus distribution
+  const focusDist = document.getElementById('focusDist');
+  if(focusDist){
+    const focusMinutes = {1:0,2:0,3:0,4:0};
+    TASKS.forEach(t=>{focusMinutes[t.focus]=(focusMinutes[t.focus]||0)+t.durationMin;});
+    const totalMin = Object.values(focusMinutes).reduce((a,b)=>a+b,0);
+    const colors={1:"var(--sage)",2:"var(--indigo-soft)",3:"var(--copper)",4:"var(--rose)"};
+    focusDist.innerHTML = [1,2,3,4].map(f=>{
+      const min=focusMinutes[f];
+      const p = totalMin ? (min/totalMin)*100 : 0;
+      const h = Math.round(min/60);
+      return `<div>
+        <div class="flex items-baseline justify-between mb-2">
+          <span class="focus-dot focus-${f}">${FOCUS_LABELS[f]}</span>
+          <span class="text-xs text-[var(--muted)]">${h}h · ${Math.round(p)}%</span>
+        </div>
+        <div class="pbar"><div style="width:${p}%;background:${colors[f]};"></div></div>
+      </div>`;
+    }).join("");
+  }
+}
+
+/* Gantt */
+function renderGantt(){
+  const g = document.getElementById('ganttChart');
+  if(!g) return;
+  const days = [];
+  for(let d=new Date(START_DATE); d<=END_DATE; d.setDate(d.getDate()+1)){
+    days.push(new Date(d));
+  }
+  let html = `<div class="flex border-b border-[var(--line)] pb-2 mb-3">
+    <div class="w-48 flex-shrink-0"></div>
+    <div class="flex-1 relative" style="height:30px;">`;
+  days.forEach((d,i)=>{
+    const isToday = isSameDay(d.toISOString().slice(0,10), TODAY);
+    html += `<div class="absolute top-0 text-[10px] text-center ${isToday?'font-bold':'text-[var(--muted)]'}" style="left:${i*48}px;width:48px;">
+      <div>${d.getDate()}</div>
+      <div class="text-[9px] opacity-70">${['D','L','M','X','J','V','S'][d.getDay()]}</div>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  // Owners
+  ['carlos','angel'].forEach(owner=>{
+    const color = owner==="carlos" ? "var(--indigo)" : "var(--copper)";
+    const ownerTasks = TASKS.filter(t=>t.owner===owner);
+    const byDate = {};
+    ownerTasks.forEach(t=>{(byDate[t.date]||(byDate[t.date]=[])).push(t);});
+    html += `<div class="flex items-center gap-4 mb-2">
+      <div class="w-48 flex-shrink-0 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full" style="background:${color};"></span>
+        <span class="font-display text-sm" style="font-weight:500;">${owner==="carlos"?"Carlos · Care":"Angel · Growth"}</span>
+      </div>
+      <div class="flex-1 relative gantt-grid" style="height:38px;">`;
+    days.forEach((d,i)=>{
+      const iso = d.toISOString().slice(0,10);
+      const isToday = isSameDay(iso, TODAY);
+      if(isToday) html += `<div class="gantt-today absolute inset-y-0" style="left:${i*48}px;width:48px;"></div>`;
+      const dayTasks = byDate[iso]||[];
+      if(dayTasks.length>0){
+        const doneCount = dayTasks.filter(t=>state.done[t.id]).length;
+        const pct = doneCount/dayTasks.length;
+        const hasMs = dayTasks.some(t=>t.milestone);
+        const hasBk = dayTasks.some(t=>t.blocker);
+        const barColor = hasBk ? "var(--rose)" : (hasMs ? "var(--copper)" : color);
+        html += `<div class="gantt-bar absolute rounded-md" style="left:${i*48+3}px;width:42px;top:6px;height:26px;background:${barColor}18;border:1px solid ${barColor}50;" title="${dayTasks.length} tareas">
+          <div class="absolute inset-0 rounded-md" style="background:${barColor};opacity:${0.1+pct*0.45};width:${pct*100}%;"></div>
+          <div class="absolute inset-0 flex items-center justify-center text-[10px] font-semibold" style="color:${barColor};">${doneCount}/${dayTasks.length}${hasMs?' ★':''}</div>
+        </div>`;
+      }
+    });
+    html += `</div></div>`;
+  });
+
+  g.innerHTML = html;
+
+  // Milestones board
+  const mBoard = document.getElementById('milestonesBoard');
+  if(mBoard){
+    const ms = TASKS.filter(t=>t.milestone).sort((a,b)=>a.date.localeCompare(b.date));
+    mBoard.innerHTML = ms.map(t=>{
+      const color = t.owner==="carlos" ? "var(--indigo)" : "var(--copper)";
+      const done = state.done[t.id];
+      return `<div class="card p-5 ${done?"opacity-60":""}" style="border-left:3px solid ${color};">
+        <div class="text-[10px] uppercase tracking-[0.16em] font-semibold" style="color:${color};">${fmtDate(t.date)}</div>
+        <div class="font-display text-base text-[var(--ink)] mt-2 ${done?"line-through":""}" style="font-weight:500;">${t.title}</div>
+        <div class="text-[10px] uppercase tracking-[0.12em] text-[var(--muted)] mt-2 font-semibold">${t.owner==="carlos"?"Carlos":"Angel"}</div>
+      </div>`;
+    }).join("");
+  }
+}
+
+/* Filters */
+function setupFilters(owner){
+  document.querySelectorAll(`[data-filter-${owner}]`).forEach(btn=>{
+    btn.onclick = ()=>{
+      filters[owner] = btn.dataset[`filter${owner.charAt(0).toUpperCase()+owner.slice(1)}`];
+      document.querySelectorAll(`[data-filter-${owner}]`).forEach(b=>b.classList.remove('fchip-active'));
+      btn.classList.add('fchip-active');
+      renderOwnerTasks(owner);
+    };
+  });
+}
+
+/* Tabs */
+function setupTabs(){
+  const btns = document.querySelectorAll('[data-tab]');
+  const panels = document.querySelectorAll('[data-panel]');
+  btns.forEach(b=>{
+    b.onclick = ()=>{
+      btns.forEach(x=>x.classList.remove('tab-active'));
+      b.classList.add('tab-active');
+      const tab = b.dataset.tab;
+      panels.forEach(p=>{
+        if(p.dataset.panel===tab){p.classList.remove('hidden');}
+        else{p.classList.add('hidden');}
+      });
+      window.scrollTo({top:0,behavior:'smooth'});
+    };
+  });
+  btns[0].classList.add('tab-active');
+}
+
+/* Export/Import */
+function exportState(){
+  const blob = new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`vincent-plan-state-${isoToday()}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+function importState(){
+  const input = document.createElement('input');
+  input.type='file'; input.accept='application/json';
+  input.onchange = (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{state = JSON.parse(reader.result); save(); render();}
+      catch{alert('Archivo inválido');}
+    };
+    reader.readAsText(f);
+  };
+  input.click();
+}
+function jumpToToday(){
+  const el = document.querySelector('details[open] summary');
+  if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function render(){
+  renderOverview();
+  renderOwnerTasks('carlos');
+  renderOwnerTasks('angel');
+  renderGantt();
+}
+
+/* Init */
+setupTabs();
+setupFilters('carlos');
+setupFilters('angel');
+render();
+// Sync boot happens in the sync module script below (defined after this block).
+
+</script>
+
+<!-- ==================== AUTH MODAL ==================== -->
+<div id="authOverlay" class="auth-overlay no-print">
+  <div class="auth-card">
+    <!-- Step: unconfigured -->
+    <div id="authStepUnconfigured" style="display:none;">
+      <div class="auth-title">Sync compartido no configurado</div>
+      <div class="auth-sub">
+        Para que tú y Angel vean las mismas marcas en tiempo real, tienes que pegar la URL de Supabase y el anon key dentro del archivo HTML (bloque <code>SYNC_CONFIG</code>, hasta arriba del script). Mientras tanto el plan funciona en modo local (solo en tu navegador).
+      </div>
+      <div class="auth-row">
+        <button class="auth-btn" onclick="closeAuthModal()">Seguir en modo local</button>
+      </div>
+    </div>
+
+    <!-- Step: email input -->
+    <div id="authStepEmail" style="display:none;">
+      <div class="auth-title">Entrar al plan compartido</div>
+      <div class="auth-sub">Te mando un código de 6 dígitos por correo. Solo Carlos y Angel están autorizados.</div>
+      <div style="margin-top:22px;">
+        <div class="auth-hint">Email</div>
+        <input id="authEmail" type="email" class="auth-input" placeholder="tu@email.com" autocomplete="email" />
+        <div id="authEmailErr" class="auth-err" style="display:none;"></div>
+      </div>
+      <div class="auth-row">
+        <button id="authSendBtn" class="auth-btn" onclick="sendOtp()">Enviar código</button>
+      </div>
+      <div style="margin-top:14px;text-align:center;">
+        <button class="auth-link" onclick="closeAuthModal()">Seguir en modo local</button>
+      </div>
+    </div>
+
+    <!-- Step: code input -->
+    <div id="authStepCode" style="display:none;">
+      <div class="auth-title">Pega tu código</div>
+      <div class="auth-sub">Revisa tu correo. Te mandamos un código de 6 dígitos a <span id="authEmailShown" style="color:var(--ink);font-weight:600;"></span>.</div>
+      <div style="margin-top:22px;">
+        <div class="auth-hint">Código</div>
+        <input id="authCode" type="text" inputmode="numeric" maxlength="6" class="auth-input" placeholder="000000" style="letter-spacing:0.3em;text-align:center;font-size:18px;" />
+        <div id="authCodeErr" class="auth-err" style="display:none;"></div>
+      </div>
+      <div class="auth-row">
+        <button id="authVerifyBtn" class="auth-btn" onclick="verifyOtp()">Entrar</button>
+      </div>
+      <div style="margin-top:14px;text-align:center;">
+        <button class="auth-link" onclick="backToEmail()">Usar otro correo</button>
+      </div>
+    </div>
+
+    <!-- Step: signed in -->
+    <div id="authStepSignedIn" style="display:none;">
+      <div class="auth-title">Conectado</div>
+      <div class="auth-sub">Entraste como <span id="authSignedEmail" style="color:var(--ink);font-weight:600;"></span>. Tus cambios se sincronizan con <span id="authOtherFounder" style="color:var(--ink);font-weight:600;">el otro founder</span> en menos de un segundo.</div>
+      <div class="auth-row">
+        <button class="auth-btn" onclick="closeAuthModal()">Cerrar</button>
+      </div>
+      <div style="margin-top:14px;text-align:center;">
+        <button class="auth-link" onclick="doSignOut()">Cerrar sesión</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ==================== PLATFORM OPS · SYNC MODULE ====================
+   Supabase Auth (OTP code) + realtime postgres subscription.
+   If SYNC_CONFIG is empty, stays in local-only mode (localStorage).
+   Table: platform_ops.plan_task_state (see migration).
+   =================================================================== */
+const SYNC_CONFIG = {
+  supabaseUrl: "https://wqjdgrrcvdctryitcajj.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxamRncnJjdmRjdHJ5aXRjYWpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTM3OTYsImV4cCI6MjA5MDU2OTc5Nn0.BQcHc7xcKG21c9V5qHBFf8T0Cf2RWJUGkHDPKjhnl1c",
+  planId: "apr19_may19"
+};
+
+const syncCtx = {
+  client: null,
+  user: null,            // { email, display_name, role }
+  founders: [],          // [{email, display_name, role}]
+  channel: null,
+  status: "local",       // "local" | "connecting" | "synced" | "error" | "pending"
+  lastError: "",
+  pendingEmail: ""
+};
+
+function syncIsConfigured(){
+  return !!(SYNC_CONFIG.supabaseUrl && SYNC_CONFIG.supabaseAnonKey);
+}
+
+function setSyncStatus(status, msg){
+  syncCtx.status = status;
+  const dot = document.getElementById("syncDot");
+  const text = document.getElementById("syncText");
+  if(!dot || !text) return;
+  dot.classList.remove("ok","pending","err");
+  if(status === "synced"){
+    dot.classList.add("ok");
+    const who = syncCtx.user?.display_name || syncCtx.user?.email || "";
+    text.textContent = who ? `Sync · ${who}` : "Sincronizado";
+  } else if(status === "connecting" || status === "pending"){
+    dot.classList.add("pending");
+    text.textContent = msg || "Conectando…";
+  } else if(status === "error"){
+    dot.classList.add("err");
+    text.textContent = msg || "Error sync";
+  } else {
+    text.textContent = syncIsConfigured() ? "Sync · iniciar sesión" : "Sync local";
+  }
+}
+
+async function bootSync(){
+  if(!syncIsConfigured()){
+    setSyncStatus("local");
+    return;
+  }
+  try{
+    syncCtx.client = supabase.createClient(SYNC_CONFIG.supabaseUrl, SYNC_CONFIG.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+      db: { schema: "platform_ops" }
+    });
+    setSyncStatus("connecting");
+    const { data: { session } } = await syncCtx.client.auth.getSession();
+    if(session?.user){
+      await onAuthSuccess(session.user);
+    } else {
+      setSyncStatus("local");
+    }
+    syncCtx.client.auth.onAuthStateChange((evt, sess) => {
+      if(evt === "SIGNED_OUT"){
+        teardownSync();
+      }
+    });
+  } catch(err){
+    console.error("[sync] boot failed", err);
+    setSyncStatus("error","Config inválida");
+  }
+}
+
+async function onAuthSuccess(authUser){
+  try{
+    setSyncStatus("connecting","Cargando estado…");
+    const { data: founderRow, error } = await syncCtx.client
+      .from("founders")
+      .select("email,display_name,role")
+      .ilike("email", authUser.email)
+      .eq("active", true)
+      .maybeSingle();
+    if(error || !founderRow){
+      await syncCtx.client.auth.signOut();
+      setSyncStatus("error","Email no autorizado");
+      openAuthModal();
+      showAuthError("authEmailErr","Este correo no está en la whitelist de founders. Avísale a Carlos para agregarte.");
+      return;
+    }
+    syncCtx.user = founderRow;
+    await hydrateFromCloud();
+    subscribeRealtime();
+    setSyncStatus("synced");
+    closeAuthModal();
+  } catch(err){
+    console.error("[sync] auth success handler failed", err);
+    setSyncStatus("error","Falla de sync");
+  }
+}
+
+async function hydrateFromCloud(){
+  if(!syncCtx.client || !syncCtx.user) return;
+  const { data, error } = await syncCtx.client
+    .from("plan_task_state")
+    .select("task_id,done")
+    .eq("plan_id", SYNC_CONFIG.planId);
+  if(error){
+    console.error("[sync] hydrate failed", error);
+    setSyncStatus("error","No pude leer estado");
+    return;
+  }
+  const cloudDone = {};
+  (data || []).forEach(row => { if(row.done) cloudDone[row.task_id] = true; });
+
+  const cloudEmpty = Object.keys(cloudDone).length === 0;
+  const localMarks = Object.keys(state.done || {}).filter(k => state.done[k]);
+
+  if(cloudEmpty && localMarks.length > 0){
+    // First-time sync: cloud is empty, local has marks. Push local up (preserve work).
+    console.log(`[sync] first-time upload: ${localMarks.length} local marks → cloud`);
+    setSyncStatus("pending","Subiendo marcas locales…");
+    for(const taskId of localMarks){
+      await cloudUpsertDone(taskId, true);
+    }
+  } else {
+    // Cloud wins. Overwrite local `done` but keep `expanded` (UI preference).
+    state.done = cloudDone;
+    saveLocal();
+    render();
+  }
+}
+
+function subscribeRealtime(){
+  if(!syncCtx.client) return;
+  if(syncCtx.channel){
+    syncCtx.client.removeChannel(syncCtx.channel);
+    syncCtx.channel = null;
+  }
+  syncCtx.channel = syncCtx.client
+    .channel(`plan-${SYNC_CONFIG.planId}`)
+    .on("postgres_changes", {
+      event: "*",
+      schema: "platform_ops",
+      table: "plan_task_state",
+      filter: `plan_id=eq.${SYNC_CONFIG.planId}`
+    }, (payload) => {
+      const row = payload.new || payload.old;
+      if(!row?.task_id) return;
+      if(payload.eventType === "DELETE"){
+        delete state.done[row.task_id];
+      } else {
+        if(row.done) state.done[row.task_id] = true;
+        else delete state.done[row.task_id];
+      }
+      saveLocal();
+      render();
+    })
+    .subscribe();
+}
+
+async function cloudUpsertDone(taskId, done){
+  if(!syncCtx.client || !syncCtx.user){ return; }
+  const task = TASKS.find(t => t.id === taskId);
+  if(!task) return;
+  const payload = {
+    plan_id: SYNC_CONFIG.planId,
+    task_id: taskId,
+    owner: task.owner,
+    task_date: task.date,
+    done: !!done,
+    done_by: done ? syncCtx.user.email : null,
+    done_at: done ? new Date().toISOString() : null
+  };
+  const { error } = await syncCtx.client
+    .from("plan_task_state")
+    .upsert(payload, { onConflict: "plan_id,task_id" });
+  if(error){
+    console.error("[sync] upsert failed", error);
+    setSyncStatus("error","No guardó en la nube");
+  } else if(syncCtx.status !== "synced"){
+    setSyncStatus("synced");
+  }
+}
+
+function teardownSync(){
+  if(syncCtx.channel && syncCtx.client){
+    syncCtx.client.removeChannel(syncCtx.channel);
+  }
+  syncCtx.channel = null;
+  syncCtx.user = null;
+  setSyncStatus("local");
+}
+
+/* =============== AUTH MODAL UI =============== */
+function showAuthStep(step){
+  ["Unconfigured","Email","Code","SignedIn"].forEach(s => {
+    const el = document.getElementById("authStep"+s);
+    if(el) el.style.display = (s === step) ? "block" : "none";
+  });
+}
+function openAuthModal(){
+  const ov = document.getElementById("authOverlay");
+  if(!ov) return;
+  if(!syncIsConfigured()){
+    showAuthStep("Unconfigured");
+  } else if(syncCtx.user){
+    document.getElementById("authSignedEmail").textContent = syncCtx.user.email;
+    const other = syncCtx.user.role === "carlos" ? "Angel" : "Carlos";
+    document.getElementById("authOtherFounder").textContent = other;
+    showAuthStep("SignedIn");
+  } else {
+    showAuthStep("Email");
+    setTimeout(() => document.getElementById("authEmail")?.focus(), 60);
+  }
+  ov.classList.add("show");
+}
+function closeAuthModal(){
+  document.getElementById("authOverlay")?.classList.remove("show");
+}
+function backToEmail(){
+  hideAuthError("authCodeErr");
+  showAuthStep("Email");
+}
+function showAuthError(id, msg){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = msg; el.style.display = "block";
+}
+function hideAuthError(id){
+  const el = document.getElementById(id);
+  if(el){ el.style.display = "none"; el.textContent = ""; }
+}
+
+async function sendOtp(){
+  hideAuthError("authEmailErr");
+  const emailEl = document.getElementById("authEmail");
+  const btn = document.getElementById("authSendBtn");
+  const email = (emailEl.value || "").trim().toLowerCase();
+  if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    showAuthError("authEmailErr","Correo inválido.");
+    return;
+  }
+  if(!syncCtx.client){
+    showAuthError("authEmailErr","Cliente Supabase no inicializado.");
+    return;
+  }
+  btn.disabled = true; btn.textContent = "Enviando…";
+  try{
+    const { error } = await syncCtx.client.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true }
+    });
+    if(error) throw error;
+    syncCtx.pendingEmail = email;
+    document.getElementById("authEmailShown").textContent = email;
+    showAuthStep("Code");
+    setTimeout(() => document.getElementById("authCode")?.focus(), 60);
+  } catch(err){
+    showAuthError("authEmailErr", err.message || "No pude enviar el código.");
+  } finally {
+    btn.disabled = false; btn.textContent = "Enviar código";
+  }
+}
+
+async function verifyOtp(){
+  hideAuthError("authCodeErr");
+  const codeEl = document.getElementById("authCode");
+  const btn = document.getElementById("authVerifyBtn");
+  const code = (codeEl.value || "").trim();
+  if(!/^\d{6}$/.test(code)){
+    showAuthError("authCodeErr","Código de 6 dígitos.");
+    return;
+  }
+  btn.disabled = true; btn.textContent = "Verificando…";
+  try{
+    const { data, error } = await syncCtx.client.auth.verifyOtp({
+      email: syncCtx.pendingEmail,
+      token: code,
+      type: "email"
+    });
+    if(error) throw error;
+    if(data?.user){
+      await onAuthSuccess(data.user);
+    }
+  } catch(err){
+    showAuthError("authCodeErr", err.message || "Código incorrecto o expirado.");
+  } finally {
+    btn.disabled = false; btn.textContent = "Entrar";
+  }
+}
+
+async function doSignOut(){
+  if(syncCtx.client){
+    await syncCtx.client.auth.signOut();
+  }
+  teardownSync();
+  closeAuthModal();
+}
+
+// Enter key submissions
+document.addEventListener("keydown", (e) => {
+  if(e.key !== "Enter") return;
+  const ov = document.getElementById("authOverlay");
+  if(!ov?.classList.contains("show")) return;
+  if(document.activeElement?.id === "authEmail"){ e.preventDefault(); sendOtp(); }
+  if(document.activeElement?.id === "authCode"){ e.preventDefault(); verifyOtp(); }
+});
+
+// Kick off sync boot (after sync module is fully loaded).
+bootSync();
+</script>
+
+</body>
+</html>
