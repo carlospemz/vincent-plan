@@ -635,21 +635,21 @@ const TASKS = [
     ],
     durationMin:60,focus:3,slot:"morning",blocker:true
   }),
-  T("c-0420-2","carlos","2026-04-20","Fix de la sección 'Tu competencia' en brief público",{
-    why:"Ha crasheado múltiples veces por hydration mismatch. Último estado es revert + defensive String() coercion. Hay que limpiarlo para no depender de esa fragilidad.",
-    how:"Reproducir el crash localmente con data real. Identificar dónde el objeto llega con forma inesperada. Aplicar validación con zod o type guards antes de render. Tests de integración con 3 shapes distintos.",
+  T("c-0420-2","carlos","2026-04-20","Auditoría de gaps de Vincent Care para venderlo",{
+    why:"Antes de escribir una línea de código nueva, hay que saber qué existe y qué falta. Vincent Care ya tiene ~2000 líneas (webhook, orchestrator, scheduling, agente), pero bloquea la venta al cliente #2 porque es single-tenant en env. Mapear gaps reales evita que construyamos lo que ya existe.",
+    how:"Clavarse en luno-platform/src/{app,lib}/care y whatsapp. Leer credentials.ts (el cuello de botella), orchestrator.ts, onboarding-form.tsx, migraciones relevantes. Salir con una lista corta de frentes priorizados.",
     subtasks:[
-      "Reproducir el hydration mismatch con brand_voice como object vs string",
-      "Refactorizar competencia section con type guards antes de render",
-      "Agregar test con 3 shapes de input (object válido, string legacy, null)",
-      "Deploy a preview y verificar que no hay warnings en console",
-      "Merge a main con tests verdes"
+      "Mapear superficie Care existente (admin + tenant + api + webhooks + lib)",
+      "Leer credentials.ts → confirmar 'V1: Single-tenant pilot, read from env'",
+      "Identificar createTenant → valida que solo crea cáscara (4 campos)",
+      "Definir 5 frentes: F1 multi-tenant WhatsApp, F2 seed vertical, F3 UI conectar canal, F4 templates healthcare, F5 playbook",
+      "Congelar plataforma founders (hydration brand_voice, brief público, growth pipeline) del foco — Angel se encarga"
     ],
     kpis:[
-      {label:"Tests pasando",target:"3/3"},
-      {label:"Console warnings",target:"0 en hydration"}
+      {label:"Gaps identificados",target:"5"},
+      {label:"Roadmap reordenado",target:"Sí"}
     ],
-    durationMin:180,focus:3,slot:"afternoon"
+    durationMin:90,focus:3,slot:"afternoon",milestone:true
   }),
   T("c-0420-3","carlos","2026-04-20","Check-in de cierre con Angel",{
     why:"Disciplina diaria de visibilidad. Sin esto, se pierde coordinación.",
@@ -660,39 +660,35 @@ const TASKS = [
   }),
 
   // Mar 21 abr
-  T("c-0421-1","carlos","2026-04-21","Configurar env vars de 360dialog en Vercel",{
-    why:"Cuando 360dialog dispare el OTP y quede el channel activo, Care tiene que estar listo para recibir tráfico sin fricción.",
-    how:"Entrar a Vercel → Project Settings → Environment Variables. Agregar las de 360dialog en Production. Verificar trim de newlines (bug conocido de vercel env).",
+  T("c-0421-1","carlos","2026-04-21","Multi-tenant WhatsApp channel settings — migración de env a DB (F1)",{
+    why:"Hoy credentials.ts dice literal 'V1: Single-tenant pilot — read from env'. Esto bloquea al cliente #2: para el segundo doctor habría que redesplegar con nuevas env vars. Sin este fix, Vincent Care no escala más allá de Damiana. Con el fix, cada tenant tiene su canal independiente configurable desde admin UI.",
+    how:"Migration whatsapp_channel_settings (tenant_id, api_key cifrada, phone_number_id, waba_id, channel_id, active). Rehacer resolveCredentialsForPhoneNumberId + resolveCredentialsForTenant para leer de esa tabla. Fallback a env solo si no hay fila — piloto Damiana queda intacto. Seed de la fila para Damiana usando los valores del env actual.",
     subtasks:[
-      "DIALOG360_API_KEY = API key del channel V3sIZOCH (copiar de wabamanagement)",
-      "DIALOG360_PARTNER_ID=srMmqpPA",
-      "DIALOG360_CHANNEL_ID=V3sIZOCH",
-      "WHATSAPP_FROM=+5218135825035",
-      "WHATSAPP_TENANT_SLUG=clinica-damiana",
-      "WHATSAPP_WEBHOOK_URL=https://luno-platform-tau.vercel.app/api/webhook/whatsapp",
-      "Verificar que no haya trailing newlines con curl al endpoint health",
-      "Redeploy para aplicar variables"
+      "Migration 085_whatsapp_channel_settings.sql con RLS por tenant",
+      "Refactor src/lib/whatsapp/credentials.ts → lectura DB con fallback env",
+      "Seed de fila Damiana (tenant_id clinica-damiana + phone_number_id 1087315631129467)",
+      "Test local: resolver devuelve creds correctas para phone_number_id conocido",
+      "Deploy a producción + smoke test con GET /api/webhooks/care/whatsapp"
     ],
     kpis:[
-      {label:"Variables en Production",target:"6 de 6"},
-      {label:"Trim verificado",target:"Sin newlines"}
+      {label:"Cliente #2 no requiere redeploy",target:"Verificado"},
+      {label:"Piloto Damiana no rompe",target:"Sí"}
     ],
-    durationMin:60,focus:2,slot:"morning"
+    durationMin:150,focus:4,slot:"morning",milestone:true
   }),
-  T("c-0421-2","carlos","2026-04-21","Revisar y reforzar el webhook handler de 360dialog",{
-    why:"El webhook es el punto de entrada del sistema. Si falla ahí, todo se cae silencioso. Hardening antes de tráfico real.",
-    how:"Refactorizar src/app/api/webhook/whatsapp/route.ts para payload de 360dialog (Meta-native webhook shape). Verificar shared-secret header, rate limiting, tenant resolution, error handling. Agregar logs estructurados en los puntos críticos.",
+  T("c-0421-2","carlos","2026-04-21","Test suite del webhook con payloads Meta reales",{
+    why:"El webhook handler ya existe y está completo (199 líneas, Meta Cloud v2, idempotency, after() para agent en background). Lo que falta es validarlo contra payloads reales de 360dialog antes de tener tráfico real — así no descubrimos bugs con pacientes de Damiana.",
+    how:"Suite de tests de integración contra fixtures JSON de payloads reales de Meta/360dialog. Simular: mensaje texto, mensaje imagen, mensaje con media caption, status update (sent/delivered/read), webhook auth failure, phone_number_id desconocido.",
     subtasks:[
-      "Adaptar handler al payload de 360dialog (Meta-native WhatsApp Cloud API shape)",
-      "Validar shared-secret o signing (360dialog usa query secret o header configurable)",
-      "Confirmar rate limiting funciona (test con 100 req en 10s)",
-      "Validar que tenant resolution por slug devuelve null limpio si no existe",
-      "Agregar console.log estructurado en cada error path",
-      "Deploy a preview y pegar un POST de muestra con curl para validar"
+      "Crear fixtures: 6 payloads JSON realistas (text, image, media, status, unauth, unknown-pnid)",
+      "Test integración POST /api/webhooks/care/whatsapp para cada fixture",
+      "Validar idempotency: enviar mismo mensaje 2× → segunda vez marcado duplicate",
+      "Validar que agent orchestrator dispara via after() sin bloquear 200",
+      "Test manual con curl contra prod: GET responde 200, POST sin auth responde 401"
     ],
     kpis:[
-      {label:"Test manual con payload real",target:"Pasa"},
-      {label:"Rate limit test",target:"Bloquea en 101"}
+      {label:"Fixtures verdes",target:"6 de 6"},
+      {label:"Idempotency verificada",target:"Sí"}
     ],
     durationMin:120,focus:3,slot:"morning"
   }),
@@ -714,35 +710,38 @@ const TASKS = [
   }),
 
   // Mie 22 abr
-  T("c-0422-1","carlos","2026-04-22","Construir script de onboarding de tenant",{
-    why:"Crear una clínica hoy requiere 15 inserts manuales. Con un script, Angel o yo lo hacemos en 90 minutos. Preparar esto antes de Damiana es crítico.",
-    how:"Script Node en scripts/onboard-tenant.ts. Recibe un JSON con tenant config (horarios, servicios, FAQs, owner). Ejecuta inserts idempotentes en Supabase. Logs claros en cada paso.",
+  T("c-0422-1","carlos","2026-04-22","Server action provisionTenant + seed por vertical healthcare (F2)",{
+    why:"Hoy createTenant solo inserta 4 campos (name/slug/vertical/tz). El doctor queda con cáscara vacía: 0 tipos-cita, 0 horarios, 0 knowledge, 0 agent settings. Cada consultorio nuevo son horas de setup manual. Con provisionTenant el onboarding de un doctor healthcare toma minutos, no horas.",
+    how:"Nueva server action provisionTenant(tenantId, vertical) que, post-creación, hace seed dependiente del vertical. Para healthcare: tipos-cita típicos (primera consulta, seguimiento, revisión, chequeo), horarios default (lun-vie 9-18), agent settings con escalate_keywords clínicos (urgencia, sangrado, dolor intenso, hospitalizar), quiet hours 21-8.",
     subtasks:[
-      "Crear scripts/onboard-tenant.ts con dotenv + supabase admin client",
-      "Input: archivo JSON con tenant_config schema documentado",
-      "Insert tenant row + platform_access + tenant_membership del owner",
-      "Insert services, hours, FAQs, os_owner_identity, reminder_templates",
-      "Idempotente: si el slug ya existe, hace update en lugar de fail",
-      "Log colorido con emojis de check/cross en cada paso"
+      "Definir shape VerticalSeed en src/lib/care/verticals/healthcare.ts",
+      "Seed: 4 appointment_types (primera-consulta 45min, seguimiento 30min, revisión 20min, chequeo 15min)",
+      "Seed: provider_schedules default lun-vie 9:00-18:00 America/Mexico_City",
+      "Seed: whatsapp_agent_settings (autoresponder=on, can_book=on, quiet 21-8, escalate_keywords clínicos)",
+      "Hook en createTenant: si vertical=healthcare → llamar provisionTenant automático",
+      "Test: crear tenant demo healthcare y verificar que todo el seed existe"
     ],
     kpis:[
-      {label:"Script funcional con JSON de prueba",target:"Crea tenant completo"},
-      {label:"Idempotencia",target:"Corre 2 veces sin error"},
-      {label:"Tiempo de ejecución",target:"<30s"}
+      {label:"Tenant healthcare listo post-creación",target:"Sin toques manuales"},
+      {label:"Tiempo onboarding tenant nuevo",target:"<5 min"}
     ],
-    durationMin:180,focus:3,slot:"morning"
+    durationMin:180,focus:4,slot:"morning",milestone:true
   }),
-  T("c-0422-2","carlos","2026-04-22","Documentar el schema de tenant_config.json",{
-    why:"Angel necesita saber qué data pedirle a Damiana. Si no está documentado, se pierde tiempo en idas y vueltas.",
-    how:"Crear docs/care-tenant-onboarding.md con schema JSON comentado + ejemplo lleno + checklist de data a recolectar del cliente.",
+  T("c-0422-2","carlos","2026-04-22","Admin UI: conectar WhatsApp por tenant (F3)",{
+    why:"Con F1 (multi-tenant DB) el resolver lee de tabla, pero aún no hay forma de LLENAR esa tabla sin SQL a mano. Necesitamos que yo (o Angel eventualmente) podamos conectar el canal de un doctor desde /admin sin tocar DB. Esto es lo que vuelve 'self-serve' el onboarding al final.",
+    how:"Ruta nueva /admin/tenants/[id]/whatsapp con form de 5 campos (api_key, phone_number_id, phone_number, waba_id, channel_id). Server action saveWhatsAppChannel con cifrado de api_key. Badge de estado (conectado / pendiente / error) en el detalle del tenant.",
     subtasks:[
-      "Ejemplo completo con clínica dental ficticia (servicios, precios aprox, horarios)",
-      "Checklist de 10 preguntas para hacerle al cliente antes del onboarding",
-      "Sección 'qué hacer si el cliente no tiene X' con defaults",
-      "Subir al repo en docs/ para que Angel lo lea"
+      "Crear página /admin/tenants/[id]/whatsapp/ con form + estado actual",
+      "Server action saveWhatsAppChannel (valida, cifra api_key, upsert en DB)",
+      "Server action testWhatsAppChannel (pega a 360dialog GET /profile para validar)",
+      "Badge en /admin/tenants/ listando estado del canal de cada tenant",
+      "Smoke test: conectar Damiana desde la UI y confirmar que el bot sigue respondiendo"
     ],
-    kpis:[{label:"Doc publicado",target:"En repo accesible a Angel"}],
-    durationMin:60,focus:2,slot:"afternoon"
+    kpis:[
+      {label:"Conectar tenant WhatsApp desde UI",target:"Sin SQL"},
+      {label:"Validación contra 360dialog",target:"Verde"}
+    ],
+    durationMin:120,focus:3,slot:"afternoon",milestone:true
   }),
   T("c-0422-3","carlos","2026-04-22","Deploy + smoke test end-to-end",{
     why:"Día sin deploy es día muerto.",
@@ -753,21 +752,24 @@ const TASKS = [
   }),
 
   // Jue 23 abr
-  T("c-0423-1","carlos","2026-04-23","Diseñar y someter las 3 templates en 360dialog / Meta",{
-    why:"Los reminders fuera de ventana 24h requieren templates aprobados por Meta. Sin esto, el no-show defense no funciona.",
-    how:"Escribir 3 templates en español MX: confirmación de cita, recordatorio 24h, recordatorio 2h. Someter a aprobación desde el hub de 360dialog (que las empuja a Meta). Guardar los template name + namespace en Vercel env.",
+  T("c-0423-1","carlos","2026-04-23","Templates WhatsApp healthcare — 5 core + playbook onboarding doctor (F4 + F5)",{
+    why:"Los reminders y confirmaciones fuera de ventana 24h requieren templates aprobados por Meta. Además, necesitamos playbook escrito de qué datos pedirle a un doctor cuando nos contrata, para que el onboarding sea reproducible (yo hoy, Angel mañana).",
+    how:"Redactar 5 templates healthcare en español MX como JSON listo para pegar al hub 360dialog. Además, doc docs/care-doctor-onboarding.md: checklist de 10 preguntas al doctor + defaults por si falta data + pasos operativos para darlo de alta.",
     subtasks:[
-      "Template 1: 'Hola {{1}}, te confirmamos tu cita el {{2}} a las {{3}} con la Dra. {{4}}. Responde SÍ para confirmar.'",
-      "Template 2 (24h antes): 'Recordatorio: tu cita es mañana {{1}} a las {{2}}. ¿Todo bien?'",
-      "Template 3 (2h antes): 'Te esperamos hoy a las {{1}} en {{2}}. Si no puedes venir, avísanos ya.'",
-      "Someter las 3 en hub 360dialog → Templates (categoría UTILITY, idioma es_MX)",
-      "Guardar template name + namespace en Vercel env cuando Meta apruebe (suele tardar 24h)"
+      "Template cita_confirmada: confirma cita con doctor y hora",
+      "Template recordatorio_24h: recuerda cita del día siguiente",
+      "Template recordatorio_2h: última llamada mismo día",
+      "Template reagendar_ofrecido: propone reagendar tras no-show o cancelación",
+      "Template no_show_followup: sigue a paciente que no llegó",
+      "Doc: 10 preguntas al doctor (horario, servicios, precios aprox, política de cancelación, etc.)",
+      "Doc: defaults healthcare por si falta data (copia del seed F2)",
+      "Doc: pasos operativos 'de firma a bot activo' (1.provisionTenant 2.conectar WhatsApp 3.aprobar templates 4.smoke test)"
     ],
     kpis:[
-      {label:"Templates sometidas",target:"3 de 3"},
-      {label:"Approval ETA",target:"<48h"}
+      {label:"Templates listas en JSON",target:"5 de 5"},
+      {label:"Playbook publicado",target:"docs/care-doctor-onboarding.md en repo"}
     ],
-    durationMin:90,focus:2,slot:"morning"
+    durationMin:150,focus:3,slot:"morning",milestone:true
   }),
   T("c-0423-2","carlos","2026-04-23","Monitoring + alertas de crons",{
     why:"Los 3 crons (no-show-defense, owner-summary, slot-cleanup) corren sin supervisión. Si fallan en silencio, Damiana no recibe sus recordatorios y se pierde la confianza desde día uno.",
