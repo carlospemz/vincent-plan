@@ -535,7 +535,7 @@
       <div class="text-[10px] uppercase tracking-[0.22em] text-[var(--copper)] font-semibold">Realidad</div>
       <h3 class="font-display text-3xl text-[var(--ink)] mt-2 mb-6" style="font-weight:400;">Lo que puede salir mal, y cómo lo resolvemos</h3>
       <div class="grid md:grid-cols-2 gap-4">
-        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(193,105,58,0.04);border-left:3px solid var(--terracotta);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--terracotta);">Alto</div><div class="font-display text-lg mt-2" style="font-weight:500;">Sender de Twilio sigue offline al 27 de abril</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Esto bloquea el go-live de Damiana.<br/><b class="text-[var(--ink)]">Plan B:</b> Carlos abre ticket de soporte con Twilio el 22 abril si sigue sin moverse. Simultáneamente evalúa 360dialog como fallback (código ya está abstracto detrás del factory).</p></div>
+        <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(193,105,58,0.04);border-left:3px solid var(--terracotta);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--terracotta);">Alto</div><div class="font-display text-lg mt-2" style="font-weight:500;">360dialog no dispara el registro del número +5218135825035</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Twilio ya liberó el número; Meta lo muestra "Pending" y la WABA Vincent está limpia. El channel V3sIZOCH en 360dialog tiene API key pero nunca se disparó el OTP de registro. Sin OTP no hay Care en vivo.<br/><b class="text-[var(--ink)]">Plan B:</b> Correo a <code>support@360dialog.com</code> enviado 2026-04-20 pidiendo trigger del registration flow. Si no hay respuesta en 48h: reenviar + abrir ticket en hub + escalar a account manager. Código sigue detrás del factory, listo para switch si hay que rehacer BSP.</p></div>
         <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(193,105,58,0.04);border-left:3px solid var(--terracotta);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--terracotta);">Alto</div><div class="font-display text-lg mt-2" style="font-weight:500;">Damiana no firma o se tarda más de 2 semanas</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Pipeline se queda sin primer cliente Care.<br/><b class="text-[var(--ink)]">Plan B:</b> Angel identifica 10 dentistas más entre Monclova/MTY al 25 abril. El primer cierre no depende de una persona.</p></div>
         <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(184,134,43,0.04);border-left:3px solid var(--copper);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--copper);">Medio</div><div class="font-display text-lg mt-2" style="font-weight:500;">HOK, MC o BA churnean por descuido</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">$16.5k MRR está vivo por ellos.<br/><b class="text-[var(--ink)]">Plan B:</b> contacto semanal obligatorio, contenido del mes adelantado antes del 2 mayo. Angel bloquea viernes o sábado para producción industrial.</p></div>
         <div class="border border-[var(--line)] rounded-xl p-5" style="background:rgba(184,134,43,0.04);border-left:3px solid var(--copper);"><div class="text-[10px] uppercase tracking-[0.2em] font-bold" style="color:var(--copper);">Medio</div><div class="font-display text-lg mt-2" style="font-weight:500;">Carlos revienta en las primeras dos semanas</div><p class="text-sm text-[var(--ink-soft)] mt-3 leading-relaxed">Semanas de harden + onboarding son pesadas.<br/><b class="text-[var(--ink)]">Plan B:</b> domingos sin pantalla, sábados tarde libres si salió la semana, bajar intensidad después del gate del 7 mayo.</p></div>
@@ -555,7 +555,7 @@
 <!-- ============================== DATA + LOGIC ============================== -->
 <script>
 const PHASES = [
-  { id:"harden",  name:"Dejar Care sólido",       short:"Fase 1", start:"2026-04-19", end:"2026-04-26", color:"#3D4A7A", desc:"Carlos desbloquea Twilio y prepara el producto para onboarding. Angel cuida lo que factura y llena el tubo de prospectos Care." },
+  { id:"harden",  name:"Dejar Care sólido",       short:"Fase 1", start:"2026-04-19", end:"2026-04-26", color:"#3D4A7A", desc:"Carlos desbloquea el registro del número en 360dialog (Twilio cancelado, Meta WABA limpia) y prepara el producto para onboarding. Angel cuida lo que factura y llena el tubo de prospectos Care." },
   { id:"tenant",  name:"Primer cliente en vivo",  short:"Fase 2", start:"2026-04-27", end:"2026-05-03", color:"#7BAA8E", desc:"Damiana instalada, recibiendo mensajes reales, con monitoreo vivo. Angel cierra reuniones presenciales de Care y produce contenido adelantado para Growth." },
   { id:"cierre",  name:"Cierre + punto de control", short:"Fase 3", start:"2026-05-04", end:"2026-05-10", color:"#B8862B", desc:"Gate de 7 días sin P0. Damiana pagando. Materiales de venta listos con case study real. Angel cierra segundo Growth y upsells." },
   { id:"scale",   name:"Escalar y segundo Care",  short:"Fase 4", start:"2026-05-11", end:"2026-05-19", color:"#C1693A", desc:"Onboarding autoservicio. Segundo cliente Care. Tubo de junio preparado. Revisión de mes y plan del siguiente ciclo." }
@@ -585,12 +585,13 @@ const TASKS = [
   // Dom 19 abr
   T("c-0419-1","carlos","2026-04-19","Auditoría del estado real de Care",{
     why:"Antes de planear hay que saber qué está vivo y qué no. Voy a mapear el estado del código, infra y bloqueos para no arrancar con supuestos.",
-    how:"Leo el doc 13-recent-progress y el 14-business-state. Abro el dashboard de Vercel, Twilio Console y Supabase. Anoto en una nota qué está verde, qué está rojo y qué está en limbo.",
+    how:"Leo el doc 13-recent-progress y el 14-business-state. Abro el dashboard de Vercel, 360dialog hub, Meta Business Manager y Supabase. Anoto en una nota qué está verde, qué está rojo y qué está en limbo.",
     subtasks:[
-      "Abrir Twilio Console y confirmar estado real del sender +5218135825035",
+      "Cancelar Twilio (ticket + refund) y confirmar que liberó el número +5218135825035",
+      "Abrir Meta WhatsApp Manager y confirmar estado del número en la WABA Vincent",
+      "Entrar a 360dialog hub (app.360dialog.io y wabamanagement) y verificar channel V3sIZOCH",
       "Verificar en Vercel que el último deploy a producción esté verde",
       "Entrar a Supabase y revisar que no haya migrations pendientes de aplicar",
-      "Leer los últimos 3 días de logs de /api/webhook/twilio-whatsapp si hay tráfico",
       "Escribir nota con 3 cosas: qué bloquea, qué funciona, qué falta"
     ],
     kpis:[
@@ -613,19 +614,20 @@ const TASKS = [
   }),
 
   // Lun 20 abr
-  T("c-0420-1","carlos","2026-04-20","Desbloquear el sender de Twilio",{
-    why:"Sin el número en vivo no hay Care. Este bloqueo externo es el cuello de botella del mes. Si hoy sigue rojo, abro ticket.",
-    how:"Entrar a Twilio Console. Si el sender sigue 'Connecting phone number to Twilio, Inc', abrir ticket de soporte Twilio con toda la info (WABA ID, Meta Business Manager ID, historial). Escalar con urgencia P1.",
+  T("c-0420-1","carlos","2026-04-20","Desbloquear registro del número en 360dialog",{
+    why:"Twilio ya liberó el número. Meta muestra el +5218135825035 como Pending en la WABA Vincent. El channel V3sIZOCH en 360dialog tiene API key pero nunca disparó el OTP de registro: ese es el único paso que falta para tener Care en vivo.",
+    how:"Confirmar estado en las 3 consolas (Meta WhatsApp Manager, wabamanagement.360dialog.io, app.360dialog.io/number/). Si el OTP no está disparado, mandar correo a support@360dialog.com con todo el contexto (partner srMmqpPA, channel V3sIZOCH, WABA 1608476866873626, BM 1621396655753371) pidiendo que corran el registration flow.",
     subtasks:[
-      "Entrar a Twilio Console → WhatsApp Senders",
-      "Capturar screenshot del estado actual del sender",
-      "Si sigue offline más de 48h, abrir ticket Twilio con prioridad alta",
-      "Verificar en Meta Business Manager que la WABA 160847698687562611 esté en orden",
+      "Meta WhatsApp Manager: confirmar número Pending en WABA 1608476866873626",
+      "wabamanagement.360dialog.io: confirmar channel V3sIZOCH 'active' + API key generada",
+      "app.360dialog.io/number/: confirmar que sigue en 'Error'",
+      "Activity log: verificar que solo hay evento de creación de API key (sin registration)",
+      "Mandar correo a support@360dialog.com con IDs y solicitud de trigger OTP",
       "Mensaje a Angel con estado actual y ETA estimado"
     ],
     kpis:[
-      {label:"Sender status confirmado",target:"Online | Pending | Blocked"},
-      {label:"Ticket abierto si aplica",target:"Número de ticket guardado"}
+      {label:"Canal 360dialog",target:"Active con OTP disparado"},
+      {label:"Correo a support@360dialog.com",target:"Enviado + tracking ID"}
     ],
     durationMin:60,focus:3,slot:"morning",blocker:true
   }),
@@ -654,36 +656,38 @@ const TASKS = [
   }),
 
   // Mar 21 abr
-  T("c-0421-1","carlos","2026-04-21","Configurar env vars de producción en Vercel",{
-    why:"Cuando el sender vaya online, tiene que estar todo listo para no perder tiempo configurando al momento del go-live.",
-    how:"Entrar a Vercel → Project Settings → Environment Variables. Agregar todas las de Twilio en Production. Verificar trim de newlines (bug conocido de vercel env).",
+  T("c-0421-1","carlos","2026-04-21","Configurar env vars de 360dialog en Vercel",{
+    why:"Cuando 360dialog dispare el OTP y quede el channel activo, Care tiene que estar listo para recibir tráfico sin fricción.",
+    how:"Entrar a Vercel → Project Settings → Environment Variables. Agregar las de 360dialog en Production. Verificar trim de newlines (bug conocido de vercel env).",
     subtasks:[
-      "TWILIO_ACCOUNT_SID con valor de Twilio Console",
-      "TWILIO_AUTH_TOKEN con valor de Twilio Console",
-      "TWILIO_WHATSAPP_FROM=+5218135825035",
-      "TWILIO_WHATSAPP_TENANT_SLUG=clinica-damiana (nuevo slug)",
-      "TWILIO_WHATSAPP_WEBHOOK_URL=https://luno-platform-tau.vercel.app/api/webhook/twilio-whatsapp",
+      "DIALOG360_API_KEY = API key del channel V3sIZOCH (copiar de wabamanagement)",
+      "DIALOG360_PARTNER_ID=srMmqpPA",
+      "DIALOG360_CHANNEL_ID=V3sIZOCH",
+      "WHATSAPP_FROM=+5218135825035",
+      "WHATSAPP_TENANT_SLUG=clinica-damiana",
+      "WHATSAPP_WEBHOOK_URL=https://luno-platform-tau.vercel.app/api/webhook/whatsapp",
       "Verificar que no haya trailing newlines con curl al endpoint health",
       "Redeploy para aplicar variables"
     ],
     kpis:[
-      {label:"Variables en Production",target:"5 de 5"},
+      {label:"Variables en Production",target:"6 de 6"},
       {label:"Trim verificado",target:"Sin newlines"}
     ],
     durationMin:60,focus:2,slot:"morning"
   }),
-  T("c-0421-2","carlos","2026-04-21","Revisar y reforzar el webhook handler de Twilio",{
+  T("c-0421-2","carlos","2026-04-21","Revisar y reforzar el webhook handler de 360dialog",{
     why:"El webhook es el punto de entrada del sistema. Si falla ahí, todo se cae silencioso. Hardening antes de tráfico real.",
-    how:"Leer src/app/api/webhook/twilio-whatsapp/route.ts. Verificar HMAC signature, rate limiting, tenant resolution, error handling. Agregar logs estructurados en los puntos críticos.",
+    how:"Refactorizar src/app/api/webhook/whatsapp/route.ts para payload de 360dialog (Meta-native webhook shape). Verificar shared-secret header, rate limiting, tenant resolution, error handling. Agregar logs estructurados en los puntos críticos.",
     subtasks:[
-      "Verificar que HMAC reconstruye URL correctamente desde request headers",
+      "Adaptar handler al payload de 360dialog (Meta-native WhatsApp Cloud API shape)",
+      "Validar shared-secret o signing (360dialog usa query secret o header configurable)",
       "Confirmar rate limiting funciona (test con 100 req en 10s)",
       "Validar que tenant resolution por slug devuelve null limpio si no existe",
       "Agregar console.log estructurado en cada error path",
-      "Deploy a preview y probar con Twilio signature validator tool"
+      "Deploy a preview y pegar un POST de muestra con curl para validar"
     ],
     kpis:[
-      {label:"Test manual con validator Twilio",target:"Pasa"},
+      {label:"Test manual con payload real",target:"Pasa"},
       {label:"Rate limit test",target:"Bloquea en 101"}
     ],
     durationMin:120,focus:3,slot:"morning"
@@ -745,18 +749,18 @@ const TASKS = [
   }),
 
   // Jue 23 abr
-  T("c-0423-1","carlos","2026-04-23","Diseñar y crear las 3 templates de Twilio",{
+  T("c-0423-1","carlos","2026-04-23","Diseñar y someter las 3 templates en 360dialog / Meta",{
     why:"Los reminders fuera de ventana 24h requieren templates aprobados por Meta. Sin esto, el no-show defense no funciona.",
-    how:"Escribir 3 templates en español MX: confirmación de cita, recordatorio 24h, recordatorio 2h. Someter a aprobación en Twilio Console. Guardar Content SIDs en Vercel env.",
+    how:"Escribir 3 templates en español MX: confirmación de cita, recordatorio 24h, recordatorio 2h. Someter a aprobación desde el hub de 360dialog (que las empuja a Meta). Guardar los template name + namespace en Vercel env.",
     subtasks:[
       "Template 1: 'Hola {{1}}, te confirmamos tu cita el {{2}} a las {{3}} con la Dra. {{4}}. Responde SÍ para confirmar.'",
       "Template 2 (24h antes): 'Recordatorio: tu cita es mañana {{1}} a las {{2}}. ¿Todo bien?'",
       "Template 3 (2h antes): 'Te esperamos hoy a las {{1}} en {{2}}. Si no puedes venir, avísanos ya.'",
-      "Someter los 3 en Twilio Console categoría UTILITY",
-      "Guardar los 3 Content SID en Vercel env cuando aprueben (suele tardar 24h)"
+      "Someter las 3 en hub 360dialog → Templates (categoría UTILITY, idioma es_MX)",
+      "Guardar template name + namespace en Vercel env cuando Meta apruebe (suele tardar 24h)"
     ],
     kpis:[
-      {label:"Templates sometidos",target:"3 de 3"},
+      {label:"Templates sometidas",target:"3 de 3"},
       {label:"Approval ETA",target:"<48h"}
     ],
     durationMin:90,focus:2,slot:"morning"
@@ -848,25 +852,25 @@ const TASKS = [
   T("c-0426-1","carlos","2026-04-26","Descanso real, sin código",{
     why:"Mañana arranca la semana más pesada del mes. Ir sin batería es peor que ir sin plan.",
     how:"Sin laptop abierta. Si surge algo, a la libreta y al lunes.",
-    subtasks:["Libreta a la mano para ideas sueltas","Teléfono laboral en DND","Revisar a las 9pm si el sender ya cambió de estado (solo mirar, no tocar)"],
+    subtasks:["Libreta a la mano para ideas sueltas","Teléfono laboral en DND","Revisar a las 9pm si 360dialog respondió / channel cambió de estado (solo mirar, no tocar)"],
     kpis:[{label:"Horas de pantalla laboral",target:"0"}],
     durationMin:0,focus:1,slot:"flexible"
   }),
 
   // Lun 27 abr — FASE 2
-  T("c-0427-1","carlos","2026-04-27","Verificar sender online + configurar webhook en Twilio Console",{
-    why:"Si el sender está online, hoy arranca el go-live. Si no, pivot al plan B y decidir en media hora.",
-    how:"Entrar a Twilio. Si online: configurar webhook URL en WhatsApp Sender Settings. Si offline: escalar ticket y decidir con Angel si pivoteamos fechas.",
+  T("c-0427-1","carlos","2026-04-27","Verificar channel activo + configurar webhook en 360dialog",{
+    why:"Si el channel V3sIZOCH ya está 'active' con el número verificado, hoy arranca el go-live. Si no, pivot al plan B y decidir en media hora.",
+    how:"Entrar a app.360dialog.io y wabamanagement. Si channel active: configurar Webhook URL desde el hub (POST al endpoint de Care). Si sigue en error: escalar correo/soporte y decidir con Angel si pivoteamos fechas.",
     subtasks:[
-      "Twilio Console → verificar status del sender",
-      "Si online: Webhook URL = https://luno-platform-tau.vercel.app/api/webhook/twilio-whatsapp",
-      "Mandar mensaje de prueba desde mi WhatsApp al sender",
+      "360dialog hub → verificar status del channel V3sIZOCH",
+      "Si active: Webhook URL = https://luno-platform-tau.vercel.app/api/webhook/whatsapp",
+      "Mandar mensaje de prueba desde mi WhatsApp al número",
       "Verificar en logs de Vercel que el webhook se ejecutó",
-      "Si offline: reunión emergencia 15min con Angel para decidir fecha alt"
+      "Si sigue error: reunión emergencia 15min con Angel para decidir fecha alt"
     ],
     kpis:[
-      {label:"Sender status",target:"Online ideal"},
-      {label:"Webhook config",target:"URL configurada"},
+      {label:"Channel status",target:"Active ideal"},
+      {label:"Webhook config",target:"URL configurada en hub"},
       {label:"Test mensaje real",target:"Llega al sistema"}
     ],
     durationMin:60,focus:4,slot:"morning",blocker:true,milestone:true
@@ -946,12 +950,12 @@ const TASKS = [
     why:"El go-live de mañana es el momento clave del mes. Quiero un runbook literal para no tomar decisiones bajo presión.",
     how:"Escribir docs/care-golive-runbook.md con pasos literales para mañana, rollback plan, teléfonos de emergencia, comandos a correr.",
     subtasks:[
-      "Paso 1: verificar sender status a las 8am",
+      "Paso 1: verificar channel 360dialog V3sIZOCH status a las 8am",
       "Paso 2: mandar mensaje de prueba desde mi WhatsApp",
       "Paso 3: avisar a Angel y Damiana que ya está vivo",
       "Paso 4: monitorear logs cada 30min las primeras 4h",
       "Rollback: cómo revertir si algo sale mal",
-      "Teléfonos: soporte Twilio, yo, Angel, Damiana"
+      "Teléfonos: soporte 360dialog, yo, Angel, Damiana"
     ],
     kpis:[{label:"Runbook listo",target:"Publicado en repo"}],
     durationMin:90,focus:2,slot:"morning"
@@ -976,7 +980,7 @@ const TASKS = [
     why:"Este es el momento. 15% del mes apuntaba aquí.",
     how:"Seguir el runbook literalmente. No improvisar. Si algo sale mal, rollback.",
     subtasks:[
-      "08:00 verificar sender status",
+      "08:00 verificar channel 360dialog active + webhook responding",
       "09:00 mandar mensaje de prueba",
       "09:15 confirmar con Angel y Damiana que está activo",
       "09:30-12:00 monitorear dashboard cada 15min",
@@ -1118,7 +1122,7 @@ const TASKS = [
       "Paso 1: cómo recibir data del cliente (link al schema)",
       "Paso 2: cómo correr el script (comando exacto)",
       "Paso 3: cómo verificar que quedó bien",
-      "Paso 4: cómo activar el sender",
+      "Paso 4: cómo activar el número en 360dialog (OTP + webhook)",
       "Troubleshooting: 5 errores típicos y sus fixes"
     ],
     kpis:[{label:"Doc publicado",target:"En repo y mandado a Angel"}],
@@ -1636,7 +1640,7 @@ const TASKS = [
   }),
   T("a-0430-2","angel","2026-04-30","Dry-run con Carlos: ser paciente en el flujo",{
     why:"Antes de abrir a público real, yo pruebo el bot completo como paciente. Encuentro fricciones que Carlos desde adentro no ve (copy, tono, tiempos).",
-    how:"Zoom 1h. Yo mando mensajes desde mi WhatsApp al sender Damiana. Carlos observa logs. Documentar cada fricción.",
+    how:"Zoom 1h. Yo mando mensajes desde mi WhatsApp al número Damiana. Carlos observa logs. Documentar cada fricción.",
     subtasks:[
       "Zoom 15:00 con Carlos",
       "Probar: agendar cita",
