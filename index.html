@@ -93,6 +93,31 @@
   .how-box{background:var(--vibe-accent-soft);padding:16px 18px;border-radius:12px;font-size:14px;color:var(--ink-soft);line-height:1.6;}
   .how-box b{color:var(--ink);font-weight:600;}
 
+  /* Comments */
+  .comments-wrap{margin-top:24px;padding-top:20px;border-top:1px dashed var(--line-soft);}
+  .comments-list{display:flex;flex-direction:column;gap:12px;margin-top:12px;}
+  .comments-empty{font-size:13px;color:var(--muted);font-style:italic;padding:8px 0;}
+  .comment-bubble{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
+  .comment-bubble.is-carlos{border-left:3px solid var(--indigo);}
+  .comment-bubble.is-angel{border-left:3px solid var(--copper);}
+  .comment-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+  .comment-author{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:0.01em;}
+  .comment-time{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .comment-body{font-size:13.5px;color:var(--ink-soft);line-height:1.55;white-space:pre-wrap;word-wrap:break-word;}
+  .comment-del{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:0;margin-left:8px;opacity:0.6;}
+  .comment-del:hover{color:var(--rose);opacity:1;}
+  .comment-form{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+  .comment-input{width:100%;min-height:64px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--cream);font-family:inherit;font-size:13.5px;color:var(--ink);line-height:1.5;resize:vertical;transition:border-color 160ms ease;}
+  .comment-input:focus{outline:none;border-color:var(--vibe-accent);}
+  .comment-input:disabled{opacity:0.5;cursor:not-allowed;}
+  .comment-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .comment-hint{font-size:11px;color:var(--muted);}
+  .comment-send{padding:7px 16px;border-radius:999px;background:var(--ink);color:var(--cream);font-size:12px;font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;transition:all 160ms ease;}
+  .comment-send:hover:not(:disabled){background:var(--vibe-accent);}
+  .comment-send:disabled{opacity:0.4;cursor:not-allowed;}
+  .comment-signin{font-size:12px;color:var(--muted);font-style:italic;padding:12px 14px;background:var(--cream);border:1px dashed var(--line);border-radius:12px;}
+  .comment-signin a{color:var(--vibe-accent);text-decoration:underline;cursor:pointer;}
+
   .pill-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;}
   @media(max-width:720px){.pill-grid{grid-template-columns:1fr;}}
 
@@ -2128,7 +2153,19 @@ const FOCUS_LABELS = {1:"Ligero",2:"Enfoque",3:"Profundo",4:"Intocable"};
 const SLOT_LABELS = {morning:"Mañana",afternoon:"Tarde",evening:"Noche",flexible:"Flexible"};
 
 let state = load();
-function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{done:{},expanded:{}};}catch{return{done:{},expanded:{}};}}
+function load(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    return {
+      done: raw.done || {},
+      expanded: raw.expanded || {},
+      comments: raw.comments || {},      // { taskId: [ {id, author_email, author_role, author_display_name, body, created_at} ] }
+      draftComments: raw.draftComments || {} // in-flight text per task (UI only)
+    };
+  }catch{
+    return { done:{}, expanded:{}, comments:{}, draftComments:{} };
+  }
+}
 // Persist locally. When authenticated to cloud, `done` is also pushed via cloudUpsertDone().
 function saveLocal(){localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
 function save(){saveLocal();}
@@ -2192,7 +2229,182 @@ function renderExpandContent(task){
     });
     html += `</div></div>`;
   }
+  html += renderCommentsSection(task);
   return html;
+}
+
+/* =============== COMMENTS · UI =============== */
+function commentsForTask(taskId){
+  const list = state.comments[taskId] || [];
+  // sort by created_at ascending (oldest first)
+  return [...list].sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+}
+
+function fmtCommentTime(iso){
+  if(!iso) return "";
+  const d = new Date(iso);
+  if(isNaN(d)) return "";
+  const now = new Date();
+  const diffMs = now - d;
+  const diffMin = Math.floor(diffMs/60000);
+  if(diffMin < 1) return "ahora";
+  if(diffMin < 60) return `hace ${diffMin}m`;
+  const diffH = Math.floor(diffMin/60);
+  if(diffH < 24) return `hace ${diffH}h`;
+  const days = Math.floor(diffH/24);
+  if(days < 7) return `hace ${days}d`;
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function renderCommentsSection(task){
+  const taskId = task.id;
+  const list = commentsForTask(taskId);
+  const signedIn = !!(syncCtx && syncCtx.user);
+  const myEmail = syncCtx?.user?.email?.toLowerCase() || "";
+
+  let listHtml;
+  if(list.length === 0){
+    listHtml = `<p class="comments-empty">Aún no hay comentarios.</p>`;
+  } else {
+    listHtml = list.map(c => {
+      const own = signedIn && c.author_email && c.author_email.toLowerCase() === myEmail;
+      const delBtn = own
+        ? `<button class="comment-del" onclick="deleteComment('${c.id}','${taskId}')" title="Borrar">borrar</button>`
+        : "";
+      return `<div class="comment-bubble is-${c.author_role}">
+        <div class="comment-head">
+          <span class="comment-author">${escapeHtml(c.author_display_name)} · <span style="color:${c.author_role==='carlos'?'var(--indigo)':'var(--copper)'};">${c.author_role}</span></span>
+          <span style="display:flex;align-items:center;">
+            <span class="comment-time">${fmtCommentTime(c.created_at)}</span>
+            ${delBtn}
+          </span>
+        </div>
+        <div class="comment-body">${escapeHtml(c.body)}</div>
+      </div>`;
+    }).join("");
+  }
+
+  let formHtml;
+  if(!syncIsConfigured()){
+    formHtml = `<p class="comment-signin">Sync local — los comentarios requieren Supabase configurado.</p>`;
+  } else if(!signedIn){
+    formHtml = `<p class="comment-signin">Para comentar, <a onclick="openAuthModal()">inicia sesión</a> como founder.</p>`;
+  } else {
+    const draft = escapeHtml(state.draftComments[taskId] || "");
+    formHtml = `<form class="comment-form" onsubmit="submitComment(event,'${taskId}')">
+      <textarea
+        class="comment-input"
+        id="ci-${taskId}"
+        placeholder="Escribe un comentario… (Ctrl/Cmd+Enter para enviar)"
+        oninput="onCommentInput('${taskId}', this.value)"
+        onkeydown="onCommentKeydown(event,'${taskId}')">${draft}</textarea>
+      <div class="comment-actions">
+        <span class="comment-hint">Visible para Carlos y Angel.</span>
+        <button class="comment-send" type="submit" ${draft.trim() ? "" : "disabled"} id="cs-${taskId}">Comentar</button>
+      </div>
+    </form>`;
+  }
+
+  const count = list.length;
+  const label = count === 0 ? "Comentarios" : (count === 1 ? "1 comentario" : `${count} comentarios`);
+  return `<div class="comments-wrap">
+    <span class="sub-label">${label}</span>
+    <div class="comments-list" id="cl-${taskId}">${listHtml}</div>
+    ${formHtml}
+  </div>`;
+}
+
+function onCommentInput(taskId, value){
+  state.draftComments[taskId] = value;
+  saveLocal();
+  const btn = document.getElementById(`cs-${taskId}`);
+  if(btn) btn.disabled = !value.trim();
+}
+
+function onCommentKeydown(e, taskId){
+  if((e.metaKey || e.ctrlKey) && e.key === "Enter"){
+    e.preventDefault();
+    submitComment(e, taskId);
+  }
+}
+
+async function submitComment(e, taskId){
+  if(e?.preventDefault) e.preventDefault();
+  const ta = document.getElementById(`ci-${taskId}`);
+  if(!ta) return;
+  const body = (ta.value || "").trim();
+  if(!body) return;
+  if(!syncCtx?.client || !syncCtx?.user){
+    alert("Necesitas iniciar sesión para comentar.");
+    return;
+  }
+  const btn = document.getElementById(`cs-${taskId}`);
+  if(btn) btn.disabled = true;
+  ta.disabled = true;
+  try{
+    const payload = {
+      plan_id: SYNC_CONFIG.planId,
+      task_id: taskId,
+      author_email: syncCtx.user.email,
+      author_role: syncCtx.user.role,
+      author_display_name: syncCtx.user.display_name,
+      body
+    };
+    const { data, error } = await syncCtx.client
+      .from("plan_task_comments")
+      .insert(payload)
+      .select()
+      .single();
+    if(error) throw error;
+    // Optimistic: realtime will echo this back too, but insert now so we show immediately.
+    upsertLocalComment(data);
+    state.draftComments[taskId] = "";
+    saveLocal();
+    render();
+  } catch(err){
+    console.error("[comments] insert failed", err);
+    alert("No pude guardar el comentario: " + (err.message || "error desconocido"));
+    ta.disabled = false;
+    if(btn) btn.disabled = false;
+  }
+}
+
+async function deleteComment(commentId, taskId){
+  if(!syncCtx?.client) return;
+  if(!confirm("¿Borrar este comentario?")) return;
+  try{
+    const { error } = await syncCtx.client
+      .from("plan_task_comments")
+      .delete()
+      .eq("id", commentId);
+    if(error) throw error;
+    removeLocalComment(commentId, taskId);
+    render();
+  } catch(err){
+    console.error("[comments] delete failed", err);
+    alert("No pude borrar: " + (err.message || "error"));
+  }
+}
+
+function upsertLocalComment(row){
+  if(!row?.task_id || !row?.id) return;
+  const list = state.comments[row.task_id] || [];
+  const idx = list.findIndex(c => c.id === row.id);
+  if(idx >= 0) list[idx] = row;
+  else list.push(row);
+  state.comments[row.task_id] = list;
+  saveLocal();
+}
+
+function removeLocalComment(commentId, taskId){
+  const list = state.comments[taskId] || [];
+  state.comments[taskId] = list.filter(c => c.id !== commentId);
+  saveLocal();
 }
 
 function canToggle(task){
@@ -2673,6 +2885,7 @@ const syncCtx = {
   user: null,            // { email, display_name, role }
   founders: [],          // [{email, display_name, role}]
   channel: null,
+  commentsChannel: null,
   status: "local",       // "local" | "connecting" | "synced" | "error" | "pending"
   lastError: "",
   pendingEmail: ""
@@ -2749,7 +2962,9 @@ async function onAuthSuccess(authUser){
     }
     syncCtx.user = founderRow;
     await hydrateFromCloud();
+    await hydrateCommentsFromCloud();
     subscribeRealtime();
+    subscribeCommentsRealtime();
     setSyncStatus("synced");
     closeAuthModal();
   } catch(err){
@@ -2818,6 +3033,57 @@ function subscribeRealtime(){
     .subscribe();
 }
 
+async function hydrateCommentsFromCloud(){
+  if(!syncCtx.client || !syncCtx.user) return;
+  const { data, error } = await syncCtx.client
+    .from("plan_task_comments")
+    .select("id,plan_id,task_id,author_email,author_role,author_display_name,body,created_at")
+    .eq("plan_id", SYNC_CONFIG.planId)
+    .order("created_at", { ascending: true });
+  if(error){
+    console.error("[comments] hydrate failed", error);
+    return;
+  }
+  const byTask = {};
+  (data || []).forEach(row => {
+    (byTask[row.task_id] ||= []).push(row);
+  });
+  state.comments = byTask;
+  saveLocal();
+  render();
+}
+
+function subscribeCommentsRealtime(){
+  if(!syncCtx.client) return;
+  if(syncCtx.commentsChannel){
+    syncCtx.client.removeChannel(syncCtx.commentsChannel);
+    syncCtx.commentsChannel = null;
+  }
+  syncCtx.commentsChannel = syncCtx.client
+    .channel(`plan-comments-${SYNC_CONFIG.planId}`)
+    .on("postgres_changes", {
+      event: "*",
+      schema: "platform_ops",
+      table: "plan_task_comments",
+      filter: `plan_id=eq.${SYNC_CONFIG.planId}`
+    }, (payload) => {
+      if(payload.eventType === "DELETE"){
+        const old = payload.old;
+        if(old?.id && old?.task_id){
+          removeLocalComment(old.id, old.task_id);
+          render();
+        }
+      } else {
+        const row = payload.new;
+        if(row?.id) {
+          upsertLocalComment(row);
+          render();
+        }
+      }
+    })
+    .subscribe();
+}
+
 async function cloudUpsertDone(taskId, done){
   if(!syncCtx.client || !syncCtx.user){ return; }
   const task = TASKS.find(t => t.id === taskId);
@@ -2846,9 +3112,16 @@ function teardownSync(){
   if(syncCtx.channel && syncCtx.client){
     syncCtx.client.removeChannel(syncCtx.channel);
   }
+  if(syncCtx.commentsChannel && syncCtx.client){
+    syncCtx.client.removeChannel(syncCtx.commentsChannel);
+  }
   syncCtx.channel = null;
+  syncCtx.commentsChannel = null;
   syncCtx.user = null;
+  state.comments = {};
+  saveLocal();
   setSyncStatus("local");
+  render();
 }
 
 /* =============== AUTH MODAL UI =============== */
